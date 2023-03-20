@@ -1,0 +1,6 @@
+spring:
+    datasource:
+        driver-class-name: org.mariadb.jdbc.Driver
+        url: jdbc:mariadb://118.67.129.204:3306/tdl
+        username: devs32
+        password: 1989

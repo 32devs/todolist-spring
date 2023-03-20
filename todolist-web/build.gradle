@@ -1,5 +1,6 @@
 dependencies {
     implementation project(':todolist-biz')
+    implementation project(':todolist-common')
 
     implementation('org.springframework.boot:spring-boot-starter-web')
     implementation('org.springframework.boot:spring-boot-starter-validation')
