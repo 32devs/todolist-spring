@@ -2,7 +2,6 @@ package kr.co.devs32.todolist.web.service;
 
 import kr.co.devs32.todolist.web.entity.User;
 import kr.co.devs32.todolist.web.repository.UserRepository;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
