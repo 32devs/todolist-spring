@@ -46,7 +46,9 @@ public class SecurityConfig {
                 .and()
                 .authorizeHttpRequests()
                 .requestMatchers("/hello").permitAll()
+                .requestMatchers("/api/authenticate").permitAll()
                 .anyRequest().authenticated()
+                //JwtSecurityConfig 적용
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider));
 
