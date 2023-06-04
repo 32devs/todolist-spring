@@ -45,8 +45,9 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests()
-                .requestMatchers("/hello").permitAll()
-                .requestMatchers("/api/authenticate").permitAll()
+//                .requestMatchers("/hello").permitAll()
+                .requestMatchers("/api/authenticate").permitAll() //token 없어도 호출 할수있도록 허용
+                .requestMatchers("/api/login").permitAll()
                 .anyRequest().authenticated()
                 //JwtSecurityConfig 적용
                 .and()
