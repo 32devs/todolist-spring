@@ -17,4 +17,5 @@ spring:
 jwt:
     header: Authorization
     secret: ZGV2czMyLXRvZG9saXN0LXNlY3JldC1rZXkmZGV2czMyLXRvZG9saXN0LXNlY3JldC1rZXkmZGV2czMyLXRvZG9saXN0LXNlY3JldC1rZXk=
-    token-validity-in-seconds: 3600
+    accessToken-validity-in-seconds: 3600
+    refreshToken-validity-in-seconds: 259200
