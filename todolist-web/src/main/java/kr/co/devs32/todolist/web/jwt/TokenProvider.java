@@ -3,6 +3,7 @@ package kr.co.devs32.todolist.web.jwt;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import kr.co.devs32.todolist.web.dto.TokenDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -28,16 +29,21 @@ public class TokenProvider implements InitializingBean {
     private static final String AUTHORITIES_KEY = "auth";
 
     private final String secret;
-    private final long tokenValidityInMilliseconds;
+    private final long accessTokenValidityInMilliseconds;
+
+    private final long refreshTokenValidityInMilliseconds;
 
     private Key key;
 
 
     public TokenProvider(
             @Value("${jwt.secret}") String secret,
-            @Value("${jwt.token-validity-in-seconds}") long tokenValidityInSeconds) {
+            @Value("${jwt.accessToken-validity-in-seconds}") long accessTokenValidityInSeconds,
+            @Value("${jwt.refreshToken-validity-in-seconds}") long refreshTokenValidityInSeconds
+    ) {
         this.secret = secret;
-        this.tokenValidityInMilliseconds = tokenValidityInSeconds * 1000;
+        this.accessTokenValidityInMilliseconds = accessTokenValidityInSeconds * 1000;
+        this.refreshTokenValidityInMilliseconds = refreshTokenValidityInSeconds * 1000;
     }
 
     @Override
@@ -47,20 +53,39 @@ public class TokenProvider implements InitializingBean {
     }
 
     /* 토큰 생성 및 토큰의 만료시간 지정*/
-    public String createToken(Authentication authentication) {
+    public TokenDto createToken(Authentication authentication) {
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
         long now = (new Date()).getTime();
-        Date validity = new Date(now + this.tokenValidityInMilliseconds);
+        Date accessValidity = new Date(now + this.accessTokenValidityInMilliseconds);
+        Date refreshValidity = new Date(now + this.refreshTokenValidityInMilliseconds);
 
-        return Jwts.builder()
+        //Access Token
+        String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim(AUTHORITIES_KEY, authorities)
                 .signWith(key, SignatureAlgorithm.HS512)
-                .setExpiration(validity)
+                .setExpiration(accessValidity)
                 .compact();
+
+        //Refresh Token
+        String refreshToken = Jwts.builder()
+                .setSubject(authentication.getName())
+                .claim(AUTHORITIES_KEY, authorities)
+                .signWith(key, SignatureAlgorithm.HS512)
+                .setExpiration(refreshValidity)
+                .compact();
+
+        return TokenDto.builder().accessToken(accessToken).refreshToken(refreshToken).key(authentication.getName()).build();
+
+//        return Jwts.builder()
+//                .setSubject(authentication.getName())
+//                .claim(AUTHORITIES_KEY, authorities)
+//                .signWith(key, SignatureAlgorithm.HS512)
+//                .setExpiration(validity)
+//                .compact();
     }
 
     public Authentication getAuthentication(String token) {
