@@ -1,9 +1,0 @@
-# CircleCI configuration file
-
-version: 2.1
-
-jobs:
-    build:
-        working_directory: ~/repo
-        docker:
-            - image: cimg/openjdk:17.0.7
