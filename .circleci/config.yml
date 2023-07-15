@@ -1,0 +1,31 @@
+# CircleCI configuration file
+
+version: 2.1
+
+dev_branch_only: &dev_branch_only
+    filters:
+        branches:
+            only: develop
+
+prod_branch_only: &prod_branch_only
+    filters:
+        branches:
+            only: production
+
+jobs:
+    springboot-build:
+        working_directory: ~/repo
+        resource_class: medium
+        docker:
+            - image: cimg/openjdk:17.0.7
+        steps:
+            - checkout
+            -   run:
+                    command: ./gradlew build
+
+workflows:
+    dev-pipeline:
+        jobs:
+           - springboot-build:
+                 name: dev-build
+                 <<: *dev_branch_only
