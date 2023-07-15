@@ -5,3 +5,11 @@ dependencies {
     implementation ('org.springframework.boot:spring-boot-starter-jdbc')
     implementation ('org.mariadb.jdbc:mariadb-java-client')
 }
+
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}
