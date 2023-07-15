@@ -12,15 +12,6 @@ prod_branch_only: &prod_branch_only
         branches:
             only: prod
 
-orbs:
-    gradle: circleci/gradle@2.2.0
-
-executors:
-    jdk17-executor:
-        docker:
-            - image: cimg/openjdk:17.0.7
-        resource_class: medium
-
 jobs:
     springboot-build:
         working_directory: ~/repo
@@ -34,6 +25,7 @@ jobs:
 
 workflows:
     dev-pipeline:
-       - springboot-build:
-             name: dev-build
-             <<: *dev_branch_only
+        jobs:
+           - springboot-build:
+                 name: dev-build
+                 <<: *dev_branch_only
