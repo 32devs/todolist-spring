@@ -5,12 +5,12 @@ version: 2.1
 dev_branch_only: &dev_branch_only
     filters:
         branches:
-            only: dev
+            only: develop
 
 prod_branch_only: &prod_branch_only
     filters:
         branches:
-            only: prod
+            only: production
 
 jobs:
     springboot-build:
