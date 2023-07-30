@@ -28,6 +28,7 @@ jobs:
             -   run:
                     name: build
                     command: ./gradlew build
+
             -   run:
                     name: docker login
                     command: docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
