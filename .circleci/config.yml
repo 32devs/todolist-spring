@@ -10,7 +10,7 @@ dev_branch_only: &dev_branch_only
 circleci_branch_only: &circleci_branch_only
     filters:
         branches:
-            only: circleci
+            only: feat/circleci
 
 prod_branch_only: &prod_branch_only
     filters:
