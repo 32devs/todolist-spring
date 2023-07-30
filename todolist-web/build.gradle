@@ -7,9 +7,9 @@ dependencies {
 }
 bootJar {
     enabled = false
-    archiveName('app.jar')
 }
 
 jar {
     enabled = true
+    archiveFileName = 'app.jar'
 }
