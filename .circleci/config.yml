@@ -29,16 +29,16 @@ jobs:
                     name: build
                     command: ./gradlew build
             -   setup_remote_docker:
-                    version: 20.10.14        
+                    version: 20.10.14
             -   run:
                     name: docker login
                     command: docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
             -   run:
                     name: build images
-                    command: docker build -t todolist -f ~/repo/todolist-web/Dockerfile .
+                    command: docker build -t todolist-dev -f ~/repo/todolist-web/Dockerfile .
             -   run:
                     name: push docker images
-                    command: docker push todolist:latest
+                    command: docker push todolist-dev:latest
 
 workflows:
     dev-pipeline:
