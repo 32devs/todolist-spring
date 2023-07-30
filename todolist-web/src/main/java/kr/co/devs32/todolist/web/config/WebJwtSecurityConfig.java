@@ -44,7 +44,7 @@ public class WebJwtSecurityConfig {
         http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         // 토큰 재발급 URL은 인증 없이 접근 가능하도록 설정. 나머지 API URL은 인증 필요
-        http.authorizeRequests()
+        http.authorizeHttpRequests()
                 .requestMatchers("/api/token").permitAll()
                 .requestMatchers("/api/**").authenticated()
                 .anyRequest().permitAll();
