@@ -13,19 +13,26 @@ prod_branch_only: &prod_branch_only
             only: production
 
 jobs:
-    springboot-build:
+    springboot:
         working_directory: ~/repo
         resource_class: medium
         docker:
-            - image: cimg/openjdk:17.0.7
+            -   image: cimg/openjdk:17.0.7
         steps:
             - checkout
             -   run:
+                    name: build
                     command: ./gradlew build
+            -   run:
+                    name: docker login
+                    command: docker login -u devs32 -p dckr_pat_Gs5bC_1QKqP1TN33s6lo63zb-HQ
+            -   run:
+                    name: push docker images
+                    command: docker-compose push
 
 workflows:
     dev-pipeline:
         jobs:
-           - springboot-build:
-                 name: dev-build
-                 <<: *dev_branch_only
+            -   springboot:
+                    name: dev-build
+                    <<: *dev_branch_only
