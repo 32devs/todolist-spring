@@ -28,6 +28,8 @@ jobs:
             -   run:
                     name: build
                     command: ./gradlew build
+            -   setup_remote_docker:
+                    version: 20.10.14        
             -   run:
                     name: docker login
                     command: docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
