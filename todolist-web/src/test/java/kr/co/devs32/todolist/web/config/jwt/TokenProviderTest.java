@@ -1,6 +1,7 @@
 package kr.co.devs32.todolist.web.config.jwt;
 
 import io.jsonwebtoken.Jwts;
+import kr.co.devs32.todolist.web.application.TodolistApplication;
 import kr.co.devs32.todolist.web.entity.User;
 import kr.co.devs32.todolist.web.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -16,7 +17,7 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
+@SpringBootTest(classes = TodolistApplication.class)
 class TokenProviderTest {
     @Autowired
     private TokenProvider tokenProvider;
