@@ -7,6 +7,11 @@ dev_branch_only: &dev_branch_only
         branches:
             only: develop
 
+circleci_branch_only: &circleci_branch_only
+    filters:
+        branches:
+            only: circleci*
+
 prod_branch_only: &prod_branch_only
     filters:
         branches:
@@ -28,7 +33,7 @@ jobs:
                     command: docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
             -   run:
                     name: build images
-                    command: docker build -t todolist
+                    command: docker build -t todolist -f /todolist-web/Dockerfile
             -   run:
                     name: push docker images
                     command: docker push todolist:latest
@@ -39,3 +44,8 @@ workflows:
             -   springboot:
                     name: dev-build
                     <<: *dev_branch_only
+    circleci-pipeline:
+        jobs:
+            -   springboot:
+                    name: dev-build
+                    <<: *circleci_branch_only
