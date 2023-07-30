@@ -1,4 +1,4 @@
-package kr.co.devs32.todolist.web.domain;
+package kr.co.devs32.todolist.web.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

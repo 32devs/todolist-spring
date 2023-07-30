@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Configuration
 @EnableJpaRepositories(basePackages = {"kr.co.devs32.todolist.web.repository"})
-@EntityScan(basePackages = {"kr.co.devs32.todolist.web.domain"})
+@EntityScan(basePackages = {"kr.co.devs32.todolist.web.entity"})
 public class JpaWebConfig {
 }

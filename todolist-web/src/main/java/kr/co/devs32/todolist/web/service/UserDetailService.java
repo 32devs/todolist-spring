@@ -1,6 +1,6 @@
 package kr.co.devs32.todolist.web.service;
 
-import kr.co.devs32.todolist.web.domain.User;
+import kr.co.devs32.todolist.web.entity.User;
 import kr.co.devs32.todolist.web.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;
