@@ -35,14 +35,14 @@ jobs:
                     command: docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
             -   run:
                     name: build images
-                    command: docker build -t todolist-dev -f ~/repo/todolist-web/Dockerfile .
+                    command: docker build -t devs32/todolist-dev -f ~/repo/todolist-web/Dockerfile .
             -   run:
                     name: push docker images
                     command: docker push devs32/todolist-dev:latest
 
 workflows:
     dev-pipeline:
-        jobs:
+        jobs:정
             -   springboot:
                     name: dev-build
                     <<: *dev_branch_only
