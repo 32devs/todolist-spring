@@ -42,7 +42,7 @@ jobs:
 
 workflows:
     dev-pipeline:
-        jobs:정
+        jobs:
             -   springboot:
                     name: dev-build
                     <<: *dev_branch_only
