@@ -38,7 +38,7 @@ jobs:
                     command: docker build -t todolist-dev -f ~/repo/todolist-web/Dockerfile .
             -   run:
                     name: push docker images
-                    command: docker push todolist-dev:latest
+                    command: docker push devs32/todolist-dev:latest
 
 workflows:
     dev-pipeline:
