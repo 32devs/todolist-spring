@@ -25,10 +25,13 @@ jobs:
                     command: ./gradlew build
             -   run:
                     name: docker login
-                    command: docker login -u devs32 -p dckr_pat_Gs5bC_1QKqP1TN33s6lo63zb-HQ
+                    command: docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
+            -   run:
+                    name: build images
+                    command: docker build -t todolist
             -   run:
                     name: push docker images
-                    command: docker-compose push
+                    command: docker push todolist:latest
 
 workflows:
     dev-pipeline:
