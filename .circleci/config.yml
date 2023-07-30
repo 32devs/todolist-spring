@@ -33,7 +33,7 @@ jobs:
                     command: docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
             -   run:
                     name: build images
-                    command: docker build -t todolist -f ~/repo/todolist-web/Dockerfile
+                    command: docker build -t todolist -f ~/repo/todolist-web/Dockerfile .
             -   run:
                     name: push docker images
                     command: docker push todolist:latest
