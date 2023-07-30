@@ -47,5 +47,5 @@ workflows:
     circleci-pipeline:
         jobs:
             -   springboot:
-                    name: dev-build
+                    name: circle-build
                     <<: *circleci_branch_only
