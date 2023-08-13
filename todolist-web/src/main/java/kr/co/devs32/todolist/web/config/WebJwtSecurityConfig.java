@@ -45,7 +45,9 @@ public class WebJwtSecurityConfig {
 
         // 토큰 재발급 URL은 인증 없이 접근 가능하도록 설정. 나머지 API URL은 인증 필요
         http.authorizeHttpRequests()
-                .requestMatchers("/api/token").permitAll()
+                .requestMatchers("/api/authenticate").permitAll()   //토큰 생성
+                .requestMatchers("/api/token").permitAll()   //토큰 재발급
+                .requestMatchers("/api/signup").permitAll()  //회원가입
                 .requestMatchers("/api/**").authenticated()
                 .anyRequest().permitAll();
 
