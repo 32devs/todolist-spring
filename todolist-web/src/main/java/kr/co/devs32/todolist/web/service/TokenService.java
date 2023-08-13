@@ -1,6 +1,7 @@
 package kr.co.devs32.todolist.web.service;
 
 import kr.co.devs32.todolist.web.config.jwt.TokenProvider;
+import kr.co.devs32.todolist.web.dto.TokenResponse;
 import kr.co.devs32.todolist.web.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,5 +27,12 @@ public class TokenService {
         return tokenProvider.generateToken(user, Duration.ofHours(2));
     }
 
+    public TokenResponse createAllToken(User userInfo) {
+        //accessToken, refreshToken 생성
+        String accessToken = tokenProvider.generateToken(userInfo, Duration.ofHours(1)); //1시간
+        String refreshToken = tokenProvider.generateToken(userInfo, Duration.ofDays(7)); //7일
+
+        return new TokenResponse(accessToken, refreshToken);
+    }
 
 }
