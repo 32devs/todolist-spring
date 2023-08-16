@@ -1,9 +1,7 @@
 package kr.co.devs32.todolist.web.config;
 
-import jakarta.servlet.Filter;
 import kr.co.devs32.todolist.web.config.jwt.TokenProvider;
-import kr.co.devs32.todolist.web.repository.RefreshTokenRepository;
-import kr.co.devs32.todolist.web.service.UserService;
+import kr.co.devs32.todolist.web.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,8 +19,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 public class WebJwtSecurityConfig {
     private final TokenProvider tokenProvider;
-    private final RefreshTokenRepository refreshTokenRepository;
-    private final UserService userService;
+    private final TokenService tokenService;
 
     @Bean
     public WebSecurityCustomizer configure() { // 스프링 시큐리티 기능 비활성화
@@ -66,7 +63,7 @@ public class WebJwtSecurityConfig {
 
     @Bean
     public TokenAuthenticationFilter tokenAuthenticationFilter() {
-        return new TokenAuthenticationFilter(tokenProvider);
+        return new TokenAuthenticationFilter(tokenProvider, tokenService);
     }
 
     @Bean
