@@ -4,7 +4,10 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import jakarta.servlet.http.HttpServletResponse;
+import kr.co.devs32.todolist.web.entity.RefreshToken;
 import kr.co.devs32.todolist.web.entity.User;
+import kr.co.devs32.todolist.web.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -14,12 +17,15 @@ import org.springframework.stereotype.Service;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Optional;
 import java.util.Set;
 
 @RequiredArgsConstructor
 @Service
 public class TokenProvider {
     private final JwtProperties jwtProperties;
+
+    private final RefreshTokenRepository refreshTokenRepository;
 
     public String generateToken(User user, Duration expiredAt) {
         Date now = new Date();
@@ -55,6 +61,17 @@ public class TokenProvider {
         }
     }
 
+    //JWT refresh 토큰 유효성 검증
+    public boolean refreshTokenVaildToken(String token) {
+        // 1차 토큰 검증
+        if(!vaildToken(token)) return false;
+
+        // DB에 저장한 토큰 비교
+        Optional<RefreshToken> refreshToken = refreshTokenRepository.findByRefreshToken(token);
+
+        return refreshToken.isPresent() && token.equals(refreshToken.get().getRefreshToken());
+    }
+
     //토큰 기반으로 인증 정보를 가져오는 메서드
     public Authentication getAuthentication(String token) {
         Claims claims = getClaims(token);
@@ -77,5 +94,14 @@ public class TokenProvider {
                 .getBody();
     }
 
+    //accessToken Header 설정
+    public void setHeaderAccessToken(HttpServletResponse response, String accessToken) {
+        response.setHeader("Access_Token", accessToken);
+    }
+
+    //refreshToken Header 설정
+    public void setHeaderRefreshToken(HttpServletResponse response, String refreshToken ) {
+        response.setHeader("Refresh_Token", refreshToken);
+    }
 
 }
