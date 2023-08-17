@@ -1,10 +1,11 @@
 package kr.co.devs32.todolist.web.rest;
 
+import jakarta.servlet.http.HttpServletResponse;
+import kr.co.devs32.todolist.web.config.jwt.TokenProvider;
 import kr.co.devs32.todolist.web.dto.CreateAccessTokenRequest;
 import kr.co.devs32.todolist.web.dto.CreateAccessTokenResponse;
 import kr.co.devs32.todolist.web.dto.TokenResponse;
 import kr.co.devs32.todolist.web.entity.User;
-import kr.co.devs32.todolist.web.repository.RefreshTokenRepository;
 import kr.co.devs32.todolist.web.service.TokenService;
 import kr.co.devs32.todolist.web.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,7 @@ public class TokenApiController {
 
     private final UserService userService;
 
-    private final RefreshTokenRepository refreshTokenRepository;
+    private final TokenProvider tokenProvider;
 
     @PostMapping("/api/token")
     public ResponseEntity<CreateAccessTokenResponse> createNewAccessToken
@@ -33,14 +34,16 @@ public class TokenApiController {
     }
 
     @PostMapping("/api/authenticate")
-    public ResponseEntity<TokenResponse> Token (@RequestBody User user) {
+    public ResponseEntity<TokenResponse> createAllToken (@RequestBody User user, HttpServletResponse response) {
         //유저 정보 확인
         User userInfo = userService.findByEmail(user.getEmail());
         //토큰 발급(access, refresh)
         TokenResponse tokenResponse = tokenService.createAllToken(userInfo);
         //리프레쉬 토큰 DB저장
-//        refreshTokenRepository.save(tokenResponse.getRefreshToken());
-
+        tokenProvider.saveRefreshToken(userInfo.getId(), tokenResponse.getRefreshToken());
+        //토큰 헤더 설정
+        tokenProvider.setHeaderAccessToken(response, tokenResponse.getAccessToken());
+        tokenProvider.setHeaderRefreshToken(response, tokenResponse.getRefreshToken());
         return ResponseEntity.ok(tokenResponse);
     }
 }
