@@ -104,4 +104,13 @@ public class TokenProvider {
         response.setHeader("Refresh_Token", refreshToken);
     }
 
+    //refreshToken DB저장
+    public void saveRefreshToken(Long userId, String newRefreshToken){
+        RefreshToken refreshToken = refreshTokenRepository.findByUserId(userId)
+                .map(entity -> entity.update(newRefreshToken))
+                .orElse(new RefreshToken(userId, newRefreshToken));
+
+        refreshTokenRepository.save(refreshToken);
+    }
+
 }
