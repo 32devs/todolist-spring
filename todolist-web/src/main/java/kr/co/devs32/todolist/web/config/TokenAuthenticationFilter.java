@@ -73,13 +73,6 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-//    private String getAccessToken(String authorizationHeader) {
-//        if(authorizationHeader != null && authorizationHeader.startsWith(TOKEN_PREFIX)) {
-//            return authorizationHeader.substring(TOKEN_PREFIX.length());
-//        }
-//        return null;
-//    }
-
     // header 토큰을 가져오는 기능
     public String getHeaderToken(HttpServletRequest request, String type) {
         return type.equals("Access") ? request.getHeader(ACCESS_TOKEN) : request.getHeader(REFRESH_TOKEN);
