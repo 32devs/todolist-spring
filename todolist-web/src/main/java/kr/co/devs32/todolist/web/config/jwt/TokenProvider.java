@@ -14,7 +14,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Optional;
@@ -27,9 +26,9 @@ public class TokenProvider {
 
     private final RefreshTokenRepository refreshTokenRepository;
 
-    public String generateToken(User user, Duration expiredAt) {
+    public String generateToken(User user, long expiredAt) {
         Date now = new Date();
-        return makeToken(new Date(now.getTime() + expiredAt.toMillis()), user);
+        return makeToken(new Date(now.getTime() + expiredAt), user);
     }
 
     //JWT 토큰 생성 메서드

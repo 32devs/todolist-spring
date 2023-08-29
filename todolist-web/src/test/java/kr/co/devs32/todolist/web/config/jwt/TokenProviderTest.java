@@ -7,6 +7,7 @@ import kr.co.devs32.todolist.web.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,6 +29,13 @@ class TokenProviderTest {
     @Autowired
     private JwtProperties jwtProperties;
 
+    @Value("${jwt.accessToken-validity-in-milli-seconds}")
+    private final Long accessTokenValidityInMilliseconds;
+
+    TokenProviderTest(Long accessTokenValidityInMilliseconds) {
+        this.accessTokenValidityInMilliseconds = accessTokenValidityInMilliseconds;
+    }
+
     // generateToken() 검증
     @DisplayName("generateToken(): 유저 정보와 만료 기간을 전달해 토큰을 만들 수 있다.")
     @Test
@@ -39,7 +47,7 @@ class TokenProviderTest {
                 .build());
 
         //when
-        String token = tokenProvider.generateToken(testUser, Duration.ofDays(14));
+        String token = tokenProvider.generateToken(testUser, accessTokenValidityInMilliseconds);
 
         //then
         Long userId = Jwts.parser()

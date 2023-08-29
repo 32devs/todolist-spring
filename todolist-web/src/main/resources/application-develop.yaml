@@ -28,8 +28,8 @@ jwt:
     secret_key: study-springboot-todolist
 #    header: Authorization
 #    secret: ZGV2czMyLXRvZG9saXN0LXNlY3JldC1rZXkmZGV2czMyLXRvZG9saXN0LXNlY3JldC1rZXkmZGV2czMyLXRvZG9saXN0LXNlY3JldC1rZXk=
-#    accessToken-validity-in-seconds: 3600 # accessToken 유효시간 (1시간)
-#    refreshToken-validity-in-seconds: 259200 #refreshToken 유효시간 (3일)
+    accessToken-validity-in-seconds: 36000 # accessToken 유효시간 (1시간)
+    refreshToken-validity-in-seconds: 604800 #refreshToken 유효시간 (7일)
 logging:
     level:
       kr.co.devs32.todolist: DEBUG
