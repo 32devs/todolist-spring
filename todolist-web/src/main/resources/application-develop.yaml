@@ -1,35 +1,24 @@
 spring:
-#    config:
-#        import: optional:vault://todolist/springboot
-    datasource:
-        driver-class-name: org.mariadb.jdbc.Driver
-        url: jdbc:mariadb://localhost:3306/tdl
-        username: devs32
-        password: 1989
-    jpa:
-        show-sql: true
-        properties:
-          hibernate:
-              format_sql: true
-        defer-datasource-initialization: true
-    #        url: vault
-    #        username: vault
-    #        password: vault
-#    cloud:
-#        vault:
-#            uri: http://118.67.129.204:8200
-#            authentication: APPROLE
-#            app-role:
-#                role-id: c100bffe-7b8d-c84e-8ef0-583af17cf0cf
-#                secret-id: 551d75c1-e23f-8444-d9c4-a0c75de9002a
-#                role: todolist
+    cloud:
+        vault:
+            uri: http://jparangdev.asuscomm.com:20003
+            authentication: APPROLE
+            app-role:
+                role-id: 2f6e47e1-8c7b-e3b0-b243-86e34674b7a2
+                secret-id: 72943a7d-b78b-85ff-a721-1e941e271fb8
+                role: todolist
+            kv:
+                enabled: true
+                backend: secrets
+                profile-separator: '/'
+                default-context: todolist/springboot
 jwt:
     issuer: pjhwin1@gmail.com
     secret_key: study-springboot-todolist
-#    header: Authorization
-#    secret: ZGV2czMyLXRvZG9saXN0LXNlY3JldC1rZXkmZGV2czMyLXRvZG9saXN0LXNlY3JldC1rZXkmZGV2czMyLXRvZG9saXN0LXNlY3JldC1rZXk=
+    #    header: Authorization
+    #    secret: ZGV2czMyLXRvZG9saXN0LXNlY3JldC1rZXkmZGV2czMyLXRvZG9saXN0LXNlY3JldC1rZXkmZGV2czMyLXRvZG9saXN0LXNlY3JldC1rZXk=
     accessToken-validity-in-seconds: 36000 # accessToken 유효시간 (1시간)
     refreshToken-validity-in-seconds: 604800 #refreshToken 유효시간 (7일)
 logging:
     level:
-      kr.co.devs32.todolist: DEBUG
+        kr.co.devs32.todolist: DEBUG
