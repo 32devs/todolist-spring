@@ -1,26 +1,22 @@
 spring:
     config:
         import: optional:vault://todolist/springboot
-    datasource:
-        driver-class-name: org.mariadb.jdbc.Driver
-#        url: vault
-#        username: vault
-#        password: vault
     cloud:
         vault:
             uri: http://jparangdev.asuscomm.com:20003
             authentication: APPROLE
             app-role:
                 role-id: 2f6e47e1-8c7b-e3b0-b243-86e34674b7a2
-                secret-id: 72943a7d-b78b-85ff-a721-1e941e271fb8
+                secret-id: ea735536-a7c8-1965-b250-5a4e19b3b9e8
                 role: todolist
-            kv:
-                enabled: true
-                backend: secrets
-                profile-separator: '/'
-                default-context: todolist/springboot
+    jpa:
+        show-sql: true
+        properties:
+            hibernate:
+                format_sql: true
+        defer-datasource-initialization: true
 jwt:
     header: Authorization
-    secret: ZGV2czMyLXRvZG9saXN0LXNlY3JldC1rZXkmZGV2czMyLXRvZG9saXN0LXNlY3JldC1rZXkmZGV2czMyLXRvZG9saXN0LXNlY3JldC1rZXk=
+#    secret: vault
     accessToken-validity-in-seconds: 3600
     refreshToken-validity-in-seconds: 259200
