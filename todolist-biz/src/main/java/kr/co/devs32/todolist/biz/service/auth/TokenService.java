@@ -1,11 +1,10 @@
-package kr.co.devs32.todolist.web.service;
+package kr.co.devs32.todolist.biz.service.auth;
 
-import kr.co.devs32.todolist.web.config.jwt.TokenProvider;
-import kr.co.devs32.todolist.web.dto.TokenResponse;
-import kr.co.devs32.todolist.web.entity.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import kr.co.devs32.todolist.common.dto.auth.UserDTO;
+import kr.co.devs32.todolist.common.response.auth.TokenResponse;
 
 @Service
 public class TokenService {
@@ -32,12 +31,12 @@ public class TokenService {
         }
 
         Long userId = refreshTokenService.findByRefreshToken(refreshToken).getUserId();
-        User user = userService.findById(userId);
+        UserDTO user = userService.findById(userId);
 
         return tokenProvider.generateToken(user, accessTokenValidityInMilliseconds);
     }
 
-    public TokenResponse createAllToken(User userInfo) {
+    public TokenResponse createAllToken(UserDTO userInfo) {
         //accessToken, refreshToken 생성
         String accessToken = tokenProvider.generateToken(userInfo, accessTokenValidityInMilliseconds); //1시간
         String refreshToken = tokenProvider.generateToken(userInfo, refreshTokenValidityInMilliseconds); //7일

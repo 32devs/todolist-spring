@@ -1,7 +1,7 @@
 package kr.co.devs32.todolist.web.config;
 
-import kr.co.devs32.todolist.web.config.jwt.TokenProvider;
-import kr.co.devs32.todolist.web.service.TokenService;
+import kr.co.devs32.todolist.biz.service.auth.TokenProvider;
+import kr.co.devs32.todolist.biz.service.auth.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
