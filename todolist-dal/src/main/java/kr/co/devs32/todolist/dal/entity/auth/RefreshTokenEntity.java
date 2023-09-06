@@ -1,4 +1,4 @@
-package kr.co.devs32.todolist.web.entity;
+package kr.co.devs32.todolist.dal.entity.auth;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -8,7 +8,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-public class RefreshToken {
+@Table(name = "refresh_token")
+public class RefreshTokenEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false)
@@ -20,12 +21,12 @@ public class RefreshToken {
     @Column(name = "refresh_token", nullable = false)
     private String refreshToken;
 
-    public RefreshToken(Long userId, String refreshToken) {
+    public RefreshTokenEntity(Long userId, String refreshToken) {
         this.userId = userId;
         this.refreshToken = refreshToken;
     }
 
-    public RefreshToken update(String newRefreshToken) {
+    public RefreshTokenEntity update(String newRefreshToken) {
         this.refreshToken = newRefreshToken;
         return this;
     }
