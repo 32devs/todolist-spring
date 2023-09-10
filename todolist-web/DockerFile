@@ -1,8 +1,6 @@
 FROM openjdk:17
 
-RUN ls
-RUN pwd
-ADD build/libs/app.jar app.jar
+ADD ~/repo/todolist-web/build/libs/app.jar app.jar
 ADD setenv.sh setenv.sh
 
 EXPOSE 8080

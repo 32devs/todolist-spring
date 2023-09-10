@@ -26,9 +26,10 @@ jobs:
         steps:
             - checkout
             -   run:
-                    command: ./gradlew build
+                    command: ./gradlew clean build
             -   setup_remote_docker:
                     version: 19.03.13
+            - run: pwd
             - run: ls todolist-web/build/libs
             - run: docker build -f todolist-web/DockerFile --tag devs32/todolist-springboot .
             - run: docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_PASSWORD}
