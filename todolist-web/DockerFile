@@ -1,5 +1,6 @@
 FROM openjdk:17
 
+WORKDIR ~repo
 ADD build/libs/app.jar app.jar
 ADD setenv.sh setenv.sh
 
