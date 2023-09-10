@@ -1,8 +1,8 @@
 FROM openjdk:17
 
+RUN mkdir /workspace/todolist
 
-
-ADD ~/repo/todolist-web/build/libs/app.jar app.jar
+ADD /home/circleci/repo/todolist-web/build/libs/app.jar app.jar
 ADD setenv.sh setenv.sh
 
 EXPOSE 8080
