@@ -1,0 +1,8 @@
+FROM openjdk:17
+
+ADD build/libs/app.jar app.jar
+ADD setenv.sh setenv.sh
+
+EXPOSE 8080
+
+CMD ["/bin/bash", "-c", "source setenv.sh && exec java $JAVA_OPTS -jar app.jar"]
