@@ -45,4 +45,3 @@ workflows:
             - springboot-build:
                   name: test-build
                   <<: *circle_branch_only
-            - docker-push
