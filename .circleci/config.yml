@@ -10,7 +10,12 @@ dev_branch_only: &dev_branch_only
 prod_branch_only: &prod_branch_only
     filters:
         branches:
-            only: production
+            only: master
+
+circle_branch_only: &circle_branch_only
+    filters:
+        branches:
+            only: circleci
 
 jobs:
     springboot-build:
@@ -22,6 +27,11 @@ jobs:
             - checkout
             -   run:
                     command: ./gradlew build
+            -   setup_remote_docker:
+                    version: 19.03.13
+            - run: docker build --build-arg JAR_FILE=build/libs/app.jar --tag devs32/todolist-springboot .
+            - run: docker login -u devs32 -p ${DOCKER_PASSWORD}
+            - run: docker push devs32/todolist-springboot
 
 workflows:
     dev-pipeline:
@@ -29,3 +39,10 @@ workflows:
            - springboot-build:
                  name: dev-build
                  <<: *dev_branch_only
+
+    test-pipeline:
+        jobs:
+            - springboot-build:
+                  name: test-build
+                  <<: *circle_branch_only
+            - docker-push
