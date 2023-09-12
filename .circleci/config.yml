@@ -29,11 +29,11 @@ jobs:
                     command: ./gradlew clean build
             -   setup_remote_docker:
                     version: 19.03.13
-            - run: pwd
-            - run: ls todolist-web/build/libs
-            - run: docker build -t devs32/todolist-springboot todolist-web/
-            - run: docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_PASSWORD}
-            - run: docker push devs32/todolist-springboot
+            -   run: pwd
+            -   run: ls todolist-web/build/libs
+            -   run: docker build -t devs32/todolist-springboot todolist-web/
+            -   run: docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_PASSWORD}
+            -   run: docker push devs32/todolist-springboot
 
 workflows:
     dev-pipeline:
