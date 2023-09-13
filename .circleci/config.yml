@@ -27,7 +27,8 @@ circle_branch_only: &circle_branch_only
 jobs:
     build:
         working_directory: ~/repo
-        executor: docker-publisher
+        docker:
+            -   image: cimg/openjdk:17.0.7
         steps:
             - checkout
             -   run:
