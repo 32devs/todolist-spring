@@ -66,10 +66,7 @@ jobs:
         steps:
             -   run:
                     name: connect ssh
-                    command: ssh $SSH_USER@$SSH_HOST -p $SSH_PORT
-            -   run:
-                    name: test
-                    command: ls
+                    command: ssh $SSH_USER@$SSH_HOST -p $SSH_PORT "docker rm todolist \ docker pull devs32/todoslit"
 
 workflows:
     test-pipeline:
