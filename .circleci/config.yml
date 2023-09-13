@@ -52,5 +52,8 @@ workflows:
     test-pipeline:
         jobs:
             - build and push:
-                  name: test-build
                   <<: *circle_branch_only
+            -  run via ssh:
+                   requires:
+                       - build and push
+                   <<: *circle_branch_only
