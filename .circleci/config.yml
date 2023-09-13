@@ -2,6 +2,13 @@
 
 version: 2.1
 
+executors:
+    docker-publisher:
+        environment:
+            IMAGE_NAME: devs32/todolist-springboot
+        docker:
+            -   image: circleci/buildpack-deps:stretch
+
 dev_branch_only: &dev_branch_only
     filters:
         branches:
@@ -20,29 +27,38 @@ circle_branch_only: &circle_branch_only
 jobs:
     build:
         working_directory: ~/repo
-        resource_class: medium
-        docker:
-            - image: cimg/openjdk:17.0.7
+        executor: docker-publisher
         steps:
             - checkout
             -   run:
                     name: gradle build
                     command: ./gradlew clean build
-            -   setup_remote_docker
+            - setup_remote_docker
             -   run:
                     name: docker build
-                    command: docker build -t devs32/todolist-springboot todolist-web/
+                    command: docker build -t $IMAGE_NAME todolist-web/
+            -   run:
+                    name: save image
+                    command: docker save -o image.tar $IMAGE_NAME
+            -   persist_to_workspace:
+                    root: .
+                    paths:
+                        - ./image.tar
     push:
-        docker:
-            -   image: circleci/buildpack-deps:stretch
+        executor: docker-publisher
         steps:
-            -   setup_remote_docker
+            -   attach_workspace:
+                    at: /tmp/workspace
+            - setup_remote_docker
+            -   run:
+                    name: load image
+                    command: docker load -i /tmp/workspace/image.tar
             -   run:
                     name: docker hub login
                     command: docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_PASSWORD}
             -   run:
                     name: docker hub push
-                    command: docker push devs32/todolist-springboot
+                    command: docker push $IMAGE_NAME:latest
     run via ssh:
         machine:
             enabled: true
@@ -57,14 +73,14 @@ jobs:
 workflows:
     test-pipeline:
         jobs:
-            - build:
-                  <<: *circle_branch_only
-            - push:
-                  requires:
-                      - build
-                  <<: *circle_branch_only
-            - run via ssh:
-                   requires:
-                       - build
-                       - push
-                   <<: *circle_branch_only
+            -   build:
+                    <<: *circle_branch_only
+            -   push:
+                    requires:
+                        - build
+                    <<: *circle_branch_only
+            -   run via ssh:
+                    requires:
+                        - build
+                        - push
+                    <<: *circle_branch_only
