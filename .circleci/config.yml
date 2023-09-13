@@ -39,8 +39,11 @@ jobs:
             enabled: true
         steps:
             -   run:
-                    name: Deploy Over SSH
-                    command: ssh $SSH_USER@$SSH_HOST -p $SSH_PORT "<remote deploy command>"
+                    name: connect ssh
+                    command: ssh $SSH_USER@$SSH_HOST -p $SSH_PORT
+            -   run:
+                    name: test
+                    command: ls
 
 workflows:
     dev-pipeline:
