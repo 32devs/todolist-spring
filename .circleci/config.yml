@@ -18,7 +18,7 @@ circle_branch_only: &circle_branch_only
             only: circleci
 
 jobs:
-    build and push:
+    build:
         working_directory: ~/repo
         resource_class: medium
         docker:
@@ -26,14 +26,23 @@ jobs:
         steps:
             - checkout
             -   run:
+                    name: gradle build
                     command: ./gradlew clean build
-            -   setup_remote_docker:
-                    version: 19.03.13
-            -   run: pwd
-            -   run: ls todolist-web/build/libs
-            -   run: docker build -t devs32/todolist-springboot todolist-web/
-            -   run: docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_PASSWORD}
-            -   run: docker push devs32/todolist-springboot
+            -   setup_remote_docker
+            -   run:
+                    name: docker build
+                    command: docker build -t devs32/todolist-springboot todolist-web/
+    push:
+        docker:
+            -   image: circleci/buildpack-deps:stretch
+        steps:
+            -   setup_remote_docker
+            -   run:
+                    name: docker hub login
+                    command: docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_PASSWORD}
+            -   run:
+                    name: docker hub push
+                    command: docker push devs32/todolist-springboot
     run via ssh:
         machine:
             enabled: true
@@ -46,17 +55,16 @@ jobs:
                     command: ls
 
 workflows:
-    dev-pipeline:
-        jobs:
-           - build and push:
-                 name: dev-build
-                 <<: *dev_branch_only
-
     test-pipeline:
         jobs:
-            - build and push:
+            - build:
                   <<: *circle_branch_only
-            -  run via ssh:
+            - push:
+                  requires:
+                      - build
+                  <<: *circle_branch_only
+            - run via ssh:
                    requires:
-                       - build and push
+                       - build
+                       - push
                    <<: *circle_branch_only
