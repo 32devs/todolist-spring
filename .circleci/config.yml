@@ -71,7 +71,7 @@ jobs:
                         - "d5:8a:ae:26:98:22:bd:70:9c:73:23:f6:2a:b3:bf:29"
             -   run:
                     name: connect ssh
-                    command: ssh $SSH_USER@$SSH_HOST -p $SSH_PORT /devs32/todolist/script/deploy.sh
+                    command: ssh devs32-docker@jparangdev.asuscomm.com -p 7100 /devs32/todolist/script/deploy.sh
 
 workflows:
     test-pipeline:
