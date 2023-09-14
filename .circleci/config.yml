@@ -29,6 +29,8 @@ jobs:
         working_directory: ~/repo
         docker:
             -   image: cimg/openjdk:17.0.7
+        environment:
+            IMAGE_NAME: devs32/todolist-springboot
         steps:
             - checkout
             -   run:
