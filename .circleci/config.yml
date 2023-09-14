@@ -68,7 +68,7 @@ jobs:
         steps:
             -   run:
                     name: connect ssh
-                    command: ssh $SSH_USER@$SSH_HOST -p $SSH_PORT "/devs32/todolist/script/deploy.sh"
+                    command: ssh $SSH_USER@$SSH_HOST -p $SSH_PORT /devs32/todolist/script/deploy.sh
 
 workflows:
     test-pipeline:
