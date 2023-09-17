@@ -70,7 +70,7 @@ jobs:
                     fingerprints:
                         - "d5:8a:ae:26:98:22:bd:70:9c:73:23:f6:2a:b3:bf:29"
             -   run:
-                    name: connect ssh and run
+                    name: connect ssh and run Tes
                     command: ssh -v $SSH_USER@$SSH_HOST -p $SSH_PORT /devs32/todolist/script/deploy.sh
 
 workflows:
