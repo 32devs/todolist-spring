@@ -64,7 +64,7 @@ jobs:
                     command: docker push $IMAGE_NAME:latest
     run via ssh:
         machine:
-            enabled: true
+            image: ubuntu-2204:2023.07.2
         steps:
             -   add_ssh_keys:
                     fingerprints:
