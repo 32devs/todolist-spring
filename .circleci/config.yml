@@ -66,12 +66,7 @@ jobs:
         machine:
             image: ubuntu-2204:2023.07.2
         steps:
-            -   add_ssh_keys:
-                    fingerprints:
-                        - "d5:8a:ae:26:98:22:bd:70:9c:73:23:f6:2a:b3:bf:29"
-            -   run:
-                    name: add SSH host to known
-                    command: ssh-keyscan -t rsa $SSH_HOST >> ~/.ssh/known_hosts
+
             -   run:
                     name: connect ssh and run
                     command: ssh -v $SSH_USER@$SSH_HOST -p $SSH_PORT StrictHostKeyChecking=no /devs32/todolist/script/deploy.sh
