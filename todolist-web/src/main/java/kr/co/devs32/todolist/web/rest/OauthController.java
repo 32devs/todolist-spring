@@ -1,24 +1,28 @@
 package kr.co.devs32.todolist.web.rest;
 
-import kr.co.devs32.todolist.web.service.LoginService;
+import jakarta.validation.Valid;
+import kr.co.devs32.todolist.web.dto.OauthResponseDto;
+import kr.co.devs32.todolist.web.service.OAuthService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.io.UnsupportedEncodingException;
-
-
-@Controller
+@Slf4j
+@RestController
 @RequiredArgsConstructor
+@RequestMapping("naver")
 public class OauthController {
 
-    private final LoginService loginService;
+    private final OAuthService oAuthService;
 
-    //네이버 인증 서버로부터 인증 코드를 내려받고 인증 코드를 이용해 액세스 토큰을 요청합니다. 그리고 네이버 인증 서버로부터 내려받은 액세스 토큰으로 사용자 정보를 가져옵니다.
-    @GetMapping("/")
-    public String Login(Model model) throws UnsupportedEncodingException {
-        model.addAttribute("naverUrl", loginService.getNaverLogin());
-        return "index";
+    @GetMapping("/callback")
+    public ResponseEntity<OauthResponseDto> callback(@Valid @RequestParam String code ,  @RequestParam String state) {
+        log.info("code : " + code + " &&&  state : " + state);
+        return ResponseEntity.ok(oAuthService.signUp(code));
     }
+
 }
