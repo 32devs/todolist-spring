@@ -76,13 +76,13 @@ jobs:
 workflows:
     test-pipeline:
         jobs:
-            -   build:
-                    <<: *circle_branch_only
-            -   push:
-                    requires:
-                        - build
-                    <<: *circle_branch_only
+            # -   build:
+                    # <<: *circle_branch_only
+            # -   push:
+                    # requires:
+                        # - build
+                    # <<: *circle_branch_only
             -   run via ssh:
-                    requires:
-                        - push
+                    # requires:
+                        # - push
                     <<: *circle_branch_only
