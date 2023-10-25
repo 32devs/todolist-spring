@@ -68,7 +68,7 @@ jobs:
         steps:
             -   add_ssh_keys:
                     fingerprints:
-                        - "d5:8a:ae:26:98:22:bd:70:9c:73:23:f6:2a:b3:bf:29"
+                        - "ec:ce:47:ff:b3:93:48:6b:c3:ef:8e:45:c6:90:c4:65"
             -   run:
                     name: connect ssh and run
                     command: ssh -v $SSH_USER@$SSH_HOST -p $SSH_PORT StrictHostKeyChecking=no /devs32/todolist/script/deploy.sh
@@ -86,3 +86,4 @@ workflows:
                     requires:
                         - push
                     <<: *circle_branch_only
+d
