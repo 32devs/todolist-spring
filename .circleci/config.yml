@@ -71,7 +71,7 @@ jobs:
                         - "ec:ce:47:ff:b3:93:48:6b:c3:ef:8e:45:c6:90:c4:65"
             -   run:
                     name: connect ssh and run
-                    command: ssh -v $SSH_USER@$SSH_HOST -p $SSH_PORT StrictHostKeyChecking=no /devs32/todolist/script/deploy.sh
+                    command: ssh -v $SSH_USER@$SSH_HOST -p $SSH_PORT StrictHostKeyChecking=no  echo 'what the hell'
 
 workflows:
     test-pipeline:
