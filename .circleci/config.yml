@@ -19,11 +19,6 @@ prod_branch_only: &prod_branch_only
         branches:
             only: master
 
-circle_branch_only: &circle_branch_only
-    filters:
-        branches:
-            only: circleci
-
 jobs:
     build:
         working_directory: ~/repo
@@ -71,15 +66,15 @@ jobs:
                     command: ssh -v $SSH_USER@$SSH_HOST -p $SSH_PORT /devs32/script/todolist/deploy_todolist.sh
 
 workflows:
-    test-pipeline:
+    develop-pipeline:
         jobs:
              -   build:
-                     <<: *circle_branch_only
+                     <<: *dev_branch_only
              -   push:
                      requires:
                          - build
-                     <<: *circle_branch_only
+                     <<: *dev_branch_only
              -   run via ssh:
                      requires:
                          - push
-                     <<: *circle_branch_only
+                     <<: *dev_branch_only
