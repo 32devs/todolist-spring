@@ -71,7 +71,7 @@ jobs:
                     command: ssh -v $SSH_USER@$SSH_HOST -p $SSH_PORT /devs32/script/todolist/deploy_todolist.sh
             -   run:
                     name : spring boot start check
-                    command: ./devs32/script/todolist/check_start_todolist.sh
+                    command: /devs32/script/todolist/check_start_todolist.sh
 
 workflows:
     test-pipeline:
