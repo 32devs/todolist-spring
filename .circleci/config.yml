@@ -2,6 +2,13 @@
 
 version: 2.1
 
+executors:
+    docker-publisher:
+        environment:
+            IMAGE_NAME: devs32/todolist-springboot
+        docker:
+            -   image: circleci/buildpack-deps:stretch
+
 dev_branch_only: &dev_branch_only
     filters:
         branches:
@@ -10,22 +17,64 @@ dev_branch_only: &dev_branch_only
 prod_branch_only: &prod_branch_only
     filters:
         branches:
-            only: production
+            only: master
 
 jobs:
-    springboot-build:
+    build:
         working_directory: ~/repo
-        resource_class: medium
         docker:
-            - image: cimg/openjdk:17.0.7
+            -   image: cimg/openjdk:17.0.7
+        environment:
+            IMAGE_NAME: devs32/todolist-springboot
         steps:
             - checkout
             -   run:
-                    command: ./gradlew build
+                    name: gradle build
+                    command: ./gradlew clean build
+            - setup_remote_docker
+            -   run:
+                    name: docker build
+                    command: docker build -t $IMAGE_NAME todolist-web/
+            -   run:
+                    name: save image
+                    command: docker save -o image.tar $IMAGE_NAME
+            -   persist_to_workspace:
+                    root: .
+                    paths:
+                        - ./image.tar
+    push:
+        executor: docker-publisher
+        steps:
+            -   attach_workspace:
+                    at: /tmp/workspace
+            - setup_remote_docker
+            -   run:
+                    name: load image
+                    command: docker load -i /tmp/workspace/image.tar
+            -   run:
+                    name: docker hub login
+                    command: docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_PASSWORD}
+            -   run:
+                    name: docker hub push
+                    command: docker push $IMAGE_NAME:latest
+    run via ssh:
+        machine:
+            image: ubuntu-2204:2023.07.2
+        steps:
+            -   run:
+                    name: connect ssh and run
+                    command: ssh -v $SSH_USER@$SSH_HOST -p $SSH_PORT /devs32/script/todolist/deploy_todolist.sh
 
 workflows:
-    dev-pipeline:
+    develop-pipeline:
         jobs:
-           - springboot-build:
-                 name: dev-build
-                 <<: *dev_branch_only
+            -   build:
+                    <<: *dev_branch_only
+            -   push:
+                    requires:
+                        - build
+                    <<: *dev_branch_only
+            -   run via ssh:
+                    requires:
+                        - push
+                    <<: *dev_branch_only
