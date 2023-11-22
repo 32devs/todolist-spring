@@ -1,10 +1,11 @@
 package kr.co.devs32.todolist.web.rest;
 
 import jakarta.validation.Valid;
-import kr.co.devs32.todolist.web.config.jwt.TokenProvider;
-import kr.co.devs32.todolist.web.dto.AddUserRequest;
-import kr.co.devs32.todolist.web.entity.User;
-import kr.co.devs32.todolist.web.service.UserService;
+import kr.co.devs32.todolist.biz.service.auth.TokenProvider;
+import kr.co.devs32.todolist.biz.service.auth.UserService;
+import kr.co.devs32.todolist.common.dto.auth.UserDTO;
+import kr.co.devs32.todolist.common.request.auth.AddUserRequest;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,8 +34,8 @@ public class UserController {
 
     //로그인
     @PostMapping("/api/login")
-    public String login(@RequestBody User user){
-        User userInfo = userService.findByEmail(user.getEmail());
+    public String login(@RequestBody UserDTO user){
+        UserDTO userInfo = userService.findByEmail(user.getEmail());
         return tokenProvider.generateToken(userInfo, accessTokenValidityInMilliseconds);
     }
 }

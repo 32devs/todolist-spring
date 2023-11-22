@@ -1,4 +1,4 @@
-package kr.co.devs32.todolist.web.dto;
+package kr.co.devs32.todolist.common.request.auth;
 
 import lombok.Getter;
 import lombok.Setter;

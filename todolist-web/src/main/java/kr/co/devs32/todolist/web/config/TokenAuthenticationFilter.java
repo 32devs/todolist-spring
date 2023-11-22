@@ -5,9 +5,9 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import kr.co.devs32.todolist.web.config.jwt.TokenProvider;
-import kr.co.devs32.todolist.web.dto.GlobalResDto;
-import kr.co.devs32.todolist.web.service.TokenService;
+import kr.co.devs32.todolist.biz.service.auth.TokenProvider;
+import kr.co.devs32.todolist.biz.service.auth.TokenService;
+import kr.co.devs32.todolist.common.dto.GlobalResDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -83,7 +83,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         response.setStatus(status.value());
         response.setContentType("application/json");
         try {
-            String json = new ObjectMapper().writeValueAsString(new GlobalResDto(msg, status.value()));
+            String json = new ObjectMapper().writeValueAsString(new GlobalResDTO(msg, status.value()));
             response.getWriter().write(json);
         } catch (Exception e) {
             log.error(e.getMessage());

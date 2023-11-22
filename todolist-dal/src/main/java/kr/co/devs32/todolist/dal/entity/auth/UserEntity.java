@@ -1,4 +1,4 @@
-package kr.co.devs32.todolist.web.entity;
+package kr.co.devs32.todolist.dal.entity.auth;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -13,7 +13,7 @@ import java.util.List;
 @Table(name = "users")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User implements UserDetails {
+public class UserEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false)
@@ -26,7 +26,7 @@ public class User implements UserDetails {
     private String password;
 
     @Builder
-    public User(String email, String password, String auth) {
+    public UserEntity(String email, String password, String auth) {
         this.email = email;
         this.password = password;
     }

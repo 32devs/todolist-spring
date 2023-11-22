@@ -26,10 +26,15 @@ subprojects {
     dependencies {
         implementation ('org.projectlombok:lombok')
         annotationProcessor ('org.projectlombok:lombok')
+        implementation ('org.mapstruct:mapstruct:1.5.5.Final')
+        annotationProcessor ('org.mapstruct:mapstruct-processor:1.5.5.Final')
+
         testImplementation ('org.springframework.boot:spring-boot-starter-test') {
             exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
         }
         implementation ('org.springframework.cloud:spring-cloud-starter-vault-config')
+        implementation ('org.springframework.boot:spring-boot-starter-security')
+        testImplementation ('org.springframework.security:spring-security-test')
     }
 
     dependencyManagement {
