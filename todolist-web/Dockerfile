@@ -1,4 +1,4 @@
-FROM openjdk:11
+FROM openjdk:17
 RUN mkdir "/app"
 COPY /todolist-web/build/libs/app.jar /app/app.jar
 
