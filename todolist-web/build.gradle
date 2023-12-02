@@ -8,10 +8,11 @@ dependencies {
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 }
 bootJar {
-    enabled = false
+    enabled = true
+    archiveFileName = 'app.jar'
 }
 
 jar {
-    enabled = true
-    archiveFileName = 'app.jar'
+    enabled = false
+//    archiveFileName = 'app.jar'
 }
