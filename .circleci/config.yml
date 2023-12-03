@@ -34,7 +34,7 @@ jobs:
             - setup_remote_docker
             -   run:
                     name: docker build
-                    command: docker build -t $IMAGE_NAME /
+                    command: docker build -t $IMAGE_NAME todolist-web/
             -   run:
                     name: save image
                     command: docker save -o image.tar $IMAGE_NAME
