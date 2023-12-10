@@ -58,13 +58,13 @@ public class OAuthService {
     @Value("${spring.security.oauth2.client.provider.naver.user-info-uri}")
     private String NAVER_USER_INFO_URI;
 
-    private final static String state = "todoList";
+    private final static String STATE = "todoList";
 
     private String CLIENT_ID;
     private String REDIRECT_URI;
 
     public String getNaverLogin() throws UnsupportedEncodingException {
-        return NAVER_AUTHORIZATION_URI+"?response_type=code&client_id="+NAVER_CLIENT_ID+"&redirect_uri="+NAVER_REDIRECT_URI+"&state="+ URLEncoder.encode(state, "UTF-8");
+        return NAVER_AUTHORIZATION_URI+"?response_type=code&client_id="+NAVER_CLIENT_ID+"&redirect_uri="+NAVER_REDIRECT_URI+"&state="+ URLEncoder.encode(STATE, "UTF-8");
     }
 
     public OauthResponseDto signUp(String code) {
@@ -87,7 +87,7 @@ public class OAuthService {
         //회원여부 닉네임으로 확인
 //        Boolean isMember = checkIsMember(user);
 
-        return new OauthResponseDto(user.getId(), jwtToken.getAccessToken(), jwtToken.getRefreshToken());
+        return OauthResponseDto.builder().id(user.getId()).accessToken(jwtToken.getAccessToken()).refreshToken(jwtToken.getRefreshToken()).build();
     }
 
     private String getAccessToken(String code) {
@@ -158,18 +158,14 @@ public class OAuthService {
     //DB정보 확인 -> 없으면 DB에 저장
     private User registerUserIfNeed(String email) {
         // DB에 중복된 이메일 있는지 확인
-        Optional<User> user = userRepository.findByEmail(email);
-
-        if(user.isEmpty()){
-            //DB에 정보 등록
+        return userRepository.findByEmail(email).orElseGet(() -> {
             User newUser = User.builder()
                     .email(email)
                     .password(passwordEncoder.encode("naver"))
 //                    .type("naver")
                     .build();
-            userRepository.save(newUser);
-        }
-        return userRepository.findByEmail(email).get();
+            return userRepository.save(newUser);
+        });
     }
 
     private TokenResponse userAuthorizationInput(User user) {
