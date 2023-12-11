@@ -1,13 +1,13 @@
 package kr.co.devs32.todolist.web.rest;
 
 import jakarta.servlet.http.HttpServletResponse;
-import kr.co.devs32.todolist.web.config.jwt.TokenProvider;
-import kr.co.devs32.todolist.web.dto.CreateAccessTokenRequest;
-import kr.co.devs32.todolist.web.dto.CreateAccessTokenResponse;
-import kr.co.devs32.todolist.web.dto.TokenResponse;
-import kr.co.devs32.todolist.web.entity.User;
-import kr.co.devs32.todolist.web.service.TokenService;
-import kr.co.devs32.todolist.web.service.UserService;
+import kr.co.devs32.todolist.biz.service.auth.TokenProvider;
+import kr.co.devs32.todolist.biz.service.auth.TokenService;
+import kr.co.devs32.todolist.biz.service.auth.UserService;
+import kr.co.devs32.todolist.common.dto.auth.UserDTO;
+import kr.co.devs32.todolist.common.request.auth.CreateAccessTokenRequest;
+import kr.co.devs32.todolist.common.response.auth.CreateAccessTokenResponse;
+import kr.co.devs32.todolist.common.response.auth.TokenResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,9 +34,9 @@ public class TokenApiController {
     }
 
     @PostMapping("/api/authenticate")
-    public ResponseEntity<TokenResponse> createAllToken (@RequestBody User user, HttpServletResponse response) {
+    public ResponseEntity<TokenResponse> createAllToken (@RequestBody UserDTO user, HttpServletResponse response) {
         //유저 정보 확인
-        User userInfo = userService.findByEmail(user.getEmail());
+        UserDTO userInfo = userService.findByEmail(user.getEmail());
         //토큰 발급(access, refresh)
         TokenResponse tokenResponse = tokenService.createAllToken(userInfo);
         //리프레쉬 토큰 DB저장

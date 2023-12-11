@@ -1,4 +1,4 @@
-package kr.co.devs32.todolist.web.config.jwt;
+package kr.co.devs32.todolist.common.jwt;
 
 import lombok.Getter;
 import lombok.Setter;

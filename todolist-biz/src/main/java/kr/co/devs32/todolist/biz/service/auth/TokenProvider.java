@@ -1,38 +1,40 @@
-package kr.co.devs32.todolist.web.config.jwt;
-
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Header;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import jakarta.servlet.http.HttpServletResponse;
-import kr.co.devs32.todolist.web.entity.RefreshToken;
-import kr.co.devs32.todolist.web.entity.User;
-import kr.co.devs32.todolist.web.repository.RefreshTokenRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.stereotype.Service;
+package kr.co.devs32.todolist.biz.service.auth;
 
 import java.util.Collections;
 import java.util.Date;
 import java.util.Optional;
 import java.util.Set;
 
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.stereotype.Service;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Header;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import jakarta.servlet.http.HttpServletResponse;
+import kr.co.devs32.todolist.common.dto.auth.UserDTO;
+import kr.co.devs32.todolist.common.jwt.JwtProperties;
+import kr.co.devs32.todolist.dal.entity.auth.RefreshTokenEntity;
+import kr.co.devs32.todolist.dal.repository.auth.RefreshTokenEntityRepository;
+import lombok.RequiredArgsConstructor;
+
 @RequiredArgsConstructor
 @Service
 public class TokenProvider {
     private final JwtProperties jwtProperties;
 
-    private final RefreshTokenRepository refreshTokenRepository;
+    private final RefreshTokenEntityRepository refreshTokenEntityRepository;
 
-    public String generateToken(User user, long expiredAt) {
+    public String generateToken(UserDTO user, long expiredAt) {
         Date now = new Date();
         return makeToken(new Date(now.getTime() + expiredAt), user);
     }
 
     //JWT 토큰 생성 메서드
-    private String makeToken(Date expiry, User user) {
+    private String makeToken(Date expiry, UserDTO user) {
         Date now = new Date();
 
         return Jwts.builder()
@@ -66,7 +68,7 @@ public class TokenProvider {
         if(!vaildToken(token)) return false;
 
         // DB에 저장한 토큰 비교
-        Optional<RefreshToken> refreshToken = refreshTokenRepository.findByRefreshToken(token);
+        Optional<RefreshTokenEntity> refreshToken = refreshTokenEntityRepository.findByRefreshToken(token);
 
         return refreshToken.isPresent() && token.equals(refreshToken.get().getRefreshToken());
     }
@@ -105,11 +107,11 @@ public class TokenProvider {
 
     //refreshToken DB저장
     public void saveRefreshToken(Long userId, String newRefreshToken){
-        RefreshToken refreshToken = refreshTokenRepository.findByUserId(userId)
+        RefreshTokenEntity refreshTokenEntity = refreshTokenEntityRepository.findByUserId(userId)
                 .map(entity -> entity.update(newRefreshToken))
-                .orElse(new RefreshToken(userId, newRefreshToken));
+                .orElse(new RefreshTokenEntity(userId, newRefreshToken));
 
-        refreshTokenRepository.save(refreshToken);
+        refreshTokenEntityRepository.save(refreshTokenEntity);
     }
 
 }
