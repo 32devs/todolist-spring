@@ -2,11 +2,15 @@ package kr.co.devs32.todolist.web.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import kr.co.devs32.todolist.web.config.jwt.TokenProvider;
+import kr.co.devs32.todolist.biz.service.auth.TokenProvider;
+import kr.co.devs32.todolist.biz.service.auth.TokenService;
+import kr.co.devs32.todolist.biz.service.auth.UserService;
+import kr.co.devs32.todolist.common.dto.auth.UserDTO;
+import kr.co.devs32.todolist.dal.entity.auth.UserEntity;
 import kr.co.devs32.todolist.web.dto.OauthResponseDto;
-import kr.co.devs32.todolist.web.dto.TokenResponse;
-import kr.co.devs32.todolist.web.entity.User;
-import kr.co.devs32.todolist.web.repository.UserRepository;
+import kr.co.devs32.todolist.common.response.auth.TokenResponse;
+import kr.co.devs32.todolist.biz.service.auth.UserDetailService;
+import kr.co.devs32.todolist.dal.repository.auth.UserEntityRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,7 +21,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -26,18 +29,17 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.Optional;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class OAuthService {
 
-    private final UserRepository userRepository;
+    private final UserEntityRepository userEntityRepository;
+    private final UserService userService;
     private final UserDetailService userDetailService;
     private final TokenProvider tokenProvider;
     private final PasswordEncoder passwordEncoder;
-
     private final TokenService tokenService;
 
     @Value("${spring.security.oauth2.client.registration.naver.client-id}")
@@ -79,7 +81,7 @@ public class OAuthService {
         String email = getUserInfo(naverAcessToken);
 
         //DB정보 확인 -> 없음면 DB저장
-        User user = registerUserIfNeed(email);
+        UserDTO user = registerUserIfNeed(email);
 
         //JWT 토큰 리턴 & 로그인 처리
         TokenResponse jwtToken = userAuthorizationInput(user);
@@ -156,20 +158,20 @@ public class OAuthService {
     }
 
     //DB정보 확인 -> 없으면 DB에 저장
-    private User registerUserIfNeed(String email) {
+    private UserDTO registerUserIfNeed(String email) {
         // DB에 중복된 이메일 있는지 확인
-        return userRepository.findByEmail(email).orElseGet(() -> {
-            User newUser = User.builder()
+        return userService.findByEmail(email).orElseGet(() -> {
+            UserDTO newUser = UserDTO.builder()
                     .email(email)
                     .password(passwordEncoder.encode("naver"))
 //                    .type("naver")
                     .build();
-            return userRepository.save(newUser);
+            return userService.save(newUser);
         });
     }
 
-    private TokenResponse userAuthorizationInput(User user) {
-        UserDetails userDetails = userDetailService.loadUserByUsername(user.getEmail());
+    private TokenResponse userAuthorizationInput(UserDTO user) {
+        UserEntity userDetails = userDetailService.loadUserByUsername(user.getEmail());
         Authentication authentication = new UsernamePasswordAuthenticationToken(
                 userDetails,
                 "",
@@ -185,7 +187,7 @@ public class OAuthService {
 
 //        user.setRefreshToken(refreshToken);
         tokenProvider.saveRefreshToken(user.getId(), tokenResponse.getRefreshToken());
-        userRepository.save(user);
+        userService.save(user);
         return tokenResponse;
     }
 
