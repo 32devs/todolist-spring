@@ -1,6 +1,16 @@
 spring:
     datasource:
         driver-class-name: org.mariadb.jdbc.Driver
-    #        url: vault
+        url: jdbc:mariadb://devs32-dev-db.cv24i8qewzus.ap-northeast-2.rds.amazonaws.com:3306/tdl
     #        username: vault
     #        password: vault
+    cloud:
+        vault:
+            uri: http://ec2-54-180-113-164.ap-northeast-2.compute.amazonaws.com:20003/
+            authentication: APPROLE
+            app-role:
+                role-id: 2209546b-126a-abb6-9d41-23d04aded932
+                secret-id: 19f59c0b-68ed-0364-4cbc-83a184b8855b
+                role: todolist
+    config:
+        import: optional:vault://todolist/springboot
