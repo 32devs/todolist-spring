@@ -45,6 +45,7 @@ public class WebJwtSecurityConfig {
                 .requestMatchers("/api/authenticate").permitAll()   //토큰 생성
                 .requestMatchers("/api/token").permitAll()   //토큰 재발급
                 .requestMatchers("/api/signup").permitAll()  //회원가입
+				.requestMatchers("/doc/**").permitAll()  //swagger
                 .requestMatchers("/api/**").authenticated()
                 .anyRequest().permitAll();
 
