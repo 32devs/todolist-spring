@@ -2,11 +2,16 @@ package kr.co.devs32.todolist.web.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import kr.co.devs32.todolist.web.config.jwt.TokenProvider;
+import kr.co.devs32.todolist.biz.mapper.UserMapper;
+import kr.co.devs32.todolist.biz.service.auth.UserService;
+import kr.co.devs32.todolist.common.dto.auth.UserDTO;
+import kr.co.devs32.todolist.common.request.auth.AddUserRequest;
+import kr.co.devs32.todolist.dal.entity.auth.UserEntity;
+import kr.co.devs32.todolist.biz.service.auth.TokenProvider;
 import kr.co.devs32.todolist.web.dto.OauthResponseDto;
-import kr.co.devs32.todolist.web.dto.TokenResponse;
-import kr.co.devs32.todolist.web.entity.User;
-import kr.co.devs32.todolist.web.repository.UserRepository;
+import kr.co.devs32.todolist.common.response.auth.TokenResponse;
+import kr.co.devs32.todolist.biz.service.auth.UserDetailService;
+import kr.co.devs32.todolist.biz.service.auth.TokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,12 +38,15 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class OAuthService {
 
-    private final UserRepository userRepository;
     private final UserDetailService userDetailService;
     private final TokenProvider tokenProvider;
     private final PasswordEncoder passwordEncoder;
 
     private final TokenService tokenService;
+
+    private final UserMapper userMapper;
+
+    private final UserService userService;
 
     @Value("${spring.security.oauth2.client.registration.naver.client-id}")
     private String NAVER_CLIENT_ID;
@@ -79,7 +87,7 @@ public class OAuthService {
         String email = getUserInfo(naverAcessToken);
 
         //DB정보 확인 -> 없음면 DB저장
-        User user = registerUserIfNeed(email);
+        UserEntity user = registerUserIfNeed(email);
 
         //JWT 토큰 리턴 & 로그인 처리
         TokenResponse jwtToken = userAuthorizationInput(user);
@@ -156,19 +164,26 @@ public class OAuthService {
     }
 
     //DB정보 확인 -> 없으면 DB에 저장
-    private User registerUserIfNeed(String email) {
+    private UserEntity registerUserIfNeed(String email) {
         // DB에 중복된 이메일 있는지 확인
-        return userRepository.findByEmail(email).orElseGet(() -> {
-            User newUser = User.builder()
+        Optional<UserDTO> user = Optional.ofNullable(userService.findByEmail(email));
+
+        if(user.isEmpty()){
+            //DB에 정보 등록
+            UserEntity newUser = UserEntity.builder()
                     .email(email)
                     .password(passwordEncoder.encode("naver"))
 //                    .type("naver")
                     .build();
-            return userRepository.save(newUser);
-        });
+            AddUserRequest dto = new AddUserRequest();
+            dto.setEmail(newUser.getEmail());
+            dto.setPassword(newUser.getPassword());
+            userService.save(dto);
+        }
+        return userMapper.convert(userService.findByEmail(email));
     }
 
-    private TokenResponse userAuthorizationInput(User user) {
+    private TokenResponse userAuthorizationInput(UserEntity user) {
         UserDetails userDetails = userDetailService.loadUserByUsername(user.getEmail());
         Authentication authentication = new UsernamePasswordAuthenticationToken(
                 userDetails,
@@ -178,14 +193,17 @@ public class OAuthService {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        TokenResponse tokenResponse = tokenService.createAllToken(user);
+        TokenResponse tokenResponse = tokenService.createAllToken(userMapper.convert(user));
 
 //        String accessToken = tokenProvider.createAccessToken(authentication);
 //        String refreshToken = tokenProvider.createRefreshToken(authentication);
 
 //        user.setRefreshToken(refreshToken);
         tokenProvider.saveRefreshToken(user.getId(), tokenResponse.getRefreshToken());
-        userRepository.save(user);
+        AddUserRequest dto = new AddUserRequest();
+        dto.setEmail(user.getEmail());
+        dto.setPassword(user.getPassword());
+        userService.save(dto);
         return tokenResponse;
     }
 
