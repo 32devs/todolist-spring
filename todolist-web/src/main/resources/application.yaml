@@ -14,3 +14,9 @@ spring:
                 role: todolist
     config:
         import: optional:vault://todolist/springboot
+
+springdoc:
+    swagger-ui:
+        path: /doc/swagger-ui.html
+    api-docs:
+        path: /doc/api-docs
