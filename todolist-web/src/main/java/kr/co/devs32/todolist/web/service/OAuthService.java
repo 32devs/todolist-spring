@@ -44,8 +44,6 @@ public class OAuthService {
 
     private final TokenService tokenService;
 
-    private final UserMapper userMapper;
-
     private final UserService userService;
 
     @Value("${spring.security.oauth2.client.registration.naver.client-id}")
@@ -66,7 +64,7 @@ public class OAuthService {
     @Value("${spring.security.oauth2.client.provider.naver.user-info-uri}")
     private String NAVER_USER_INFO_URI;
 
-    private final static String STATE = "todoList";
+    private  static final String STATE = "todoList";
 
     private String CLIENT_ID;
     private String REDIRECT_URI;
@@ -180,7 +178,7 @@ public class OAuthService {
             dto.setPassword(newUser.getPassword());
             userService.save(dto);
         }
-        return userMapper.convert(userService.findByEmail(email));
+        return UserMapper.INSTANCE.convert(userService.findByEmail(email));
     }
 
     private TokenResponse userAuthorizationInput(UserEntity user) {
@@ -193,7 +191,7 @@ public class OAuthService {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        TokenResponse tokenResponse = tokenService.createAllToken(userMapper.convert(user));
+        TokenResponse tokenResponse = tokenService.createAllToken(UserMapper.INSTANCE.convert(user));
 
 //        String accessToken = tokenProvider.createAccessToken(authentication);
 //        String refreshToken = tokenProvider.createRefreshToken(authentication);
