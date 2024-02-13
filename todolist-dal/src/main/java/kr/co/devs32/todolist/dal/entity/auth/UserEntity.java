@@ -26,9 +26,10 @@ public class UserEntity implements UserDetails {
     private String password;
 
     @Builder
-    public UserEntity(String email, String password, String auth) {
+    public UserEntity(String email, String password, Long id) {
         this.email = email;
         this.password = password;
+        this.id = id;
     }
 
     @Override // 권한 반환

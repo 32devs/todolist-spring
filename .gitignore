@@ -41,3 +41,4 @@ bin/
 .DS_Store
 /.idea/
 /.gradle/
+/todolist-biz/src/main/generated/
