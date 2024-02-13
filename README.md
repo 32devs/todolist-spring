@@ -1,9 +1,17 @@
-# Todolist server
+# Todolist - Server side app
 
-## spec
-- java 17
-- spring boot 3.0.4
+이 프로젝트는 투두리스트의 서버 사이드 앱입니다. 
+이 애플리케이션은 사용자가 할 일을 관리하고, 할 일을 추가하고, 완료한 할 일을 체크하는 등의 기능을 제공합니다.
 
-## features
+## Dependency
+
+- Java 17
+- Gradle 7.5.1
+- Spring Boot 3.0.4
+  - Spring Data JPA
+  - Spring Security
+- Vault
+
+## Features
 - 로그인 기능
 - oauth 기능
