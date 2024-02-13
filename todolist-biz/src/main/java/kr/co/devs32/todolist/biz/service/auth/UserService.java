@@ -34,6 +34,6 @@ public class UserService {
     public UserDTO findByEmail(String email) {
         return userEntityRepository.findByEmail(email)
             .map(UserMapper.INSTANCE::convert)
-                .orElseThrow(() -> new IllegalArgumentException("Unexpected user"));
+                .orElse(null);
     }
 }

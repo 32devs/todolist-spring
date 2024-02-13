@@ -192,16 +192,8 @@ public class OAuthService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         TokenResponse tokenResponse = tokenService.createAllToken(UserMapper.INSTANCE.convert(user));
-
-//        String accessToken = tokenProvider.createAccessToken(authentication);
-//        String refreshToken = tokenProvider.createRefreshToken(authentication);
-
-//        user.setRefreshToken(refreshToken);
         tokenProvider.saveRefreshToken(user.getId(), tokenResponse.getRefreshToken());
-        AddUserRequest dto = new AddUserRequest();
-        dto.setEmail(user.getEmail());
-        dto.setPassword(user.getPassword());
-        userService.save(dto);
+
         return tokenResponse;
     }
 
