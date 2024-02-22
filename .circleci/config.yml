@@ -30,7 +30,7 @@ jobs:
             - checkout
             -   run:
                     name: gradle build
-                    command: ./gradlew clean build -Dorg.gradle.jvmargs="$JVM_OPTS"
+                    command: ./gradlew clean build -Dorg.gradle.jvmargs="${JVM_OPTS}"
             - setup_remote_docker
             -   run:
                     name: docker build
