@@ -30,7 +30,7 @@ jobs:
             - checkout
             -   run:
                     name: gradle build
-                    command: ./gradlew clean build
+                    command: ./gradlew clean build -Dorg.gradle.jvmargs="$JVM_OPTS"
             - setup_remote_docker
             -   run:
                     name: docker build
@@ -63,7 +63,7 @@ jobs:
         steps:
             -   run:
                     name: connect ssh and run
-                    command: ssh -v $SSH_USER@$SSH_HOST /home/devs32/script/todolist/deploy_todolist.sh
+                    command: ssh -v $SSH_USER@$SSH_HOST /home/devs32/script/deploy_todolist.sh
 
 workflows:
     develop-pipeline:

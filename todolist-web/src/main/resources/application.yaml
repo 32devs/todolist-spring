@@ -1,19 +1,19 @@
 spring:
     datasource:
         driver-class-name: org.mariadb.jdbc.Driver
-        url: jdbc:mariadb://devs32-dev-db.cv24i8qewzus.ap-northeast-2.rds.amazonaws.com:3306/tdl
-    #        username: vault
-    #        password: vault
+#       url: vault
+#       username: vault
+#       password: vault
     cloud:
         vault:
-            uri: http://ec2-54-180-113-164.ap-northeast-2.compute.amazonaws.com:20003/
+            uri: http://ec2-3-36-112-136.ap-northeast-2.compute.amazonaws.com:20003/
             authentication: APPROLE
             app-role:
-                role-id: 2209546b-126a-abb6-9d41-23d04aded932
-                secret-id: 19f59c0b-68ed-0364-4cbc-83a184b8855b
-                role: todolist
+                role-id: ${vaultRoleId}
+                secret-id: ${vaultSecretId}
+                role: ${vaultRole}
     config:
-        import: optional:vault://todolist/springboot
+        import: optional:vault://todolist/dev/spring-boot
 
 springdoc:
     swagger-ui:
