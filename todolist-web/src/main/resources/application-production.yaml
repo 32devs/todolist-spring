@@ -1,14 +1,4 @@
 spring:
-    config:
-        import: optional:vault://todolist/springboot
-    cloud:
-        vault:
-            uri: http://jparangdev.asuscomm.com:20003
-            authentication: APPROLE
-            app-role:
-                role-id: 2f6e47e1-8c7b-e3b0-b243-86e34674b7a2
-                secret-id: ea735536-a7c8-1965-b250-5a4e19b3b9e8
-                role: todolist
     jpa:
         show-sql: true
         properties:
