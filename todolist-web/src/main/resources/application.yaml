@@ -1,12 +1,12 @@
 spring:
     datasource:
         driver-class-name: org.mariadb.jdbc.Driver
-#       url: vault
-#       username: vault
-#       password: vault
+        #url: vault
+        #username: vault
+        #password: vault
     cloud:
         vault:
-            uri: http://ec2-3-36-112-136.ap-northeast-2.compute.amazonaws.com:20003/
+            uri: http://35.247.121.180:20003/
             authentication: APPROLE
             app-role:
                 role-id: ${vaultRoleId}
