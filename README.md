@@ -15,3 +15,7 @@
 ## Features
 - 로그인 기능
 - oauth 기능
+
+## Archtecture
+이 프로젝트는 최대한 클린아키텍쳐를 지향합니다.
+https://www.baeldung.com/spring-boot-clean-architecture
