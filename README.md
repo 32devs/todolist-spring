@@ -5,9 +5,9 @@
 
 ## Dependency
 
-- Java 17
-- Gradle 7.5.1
-- Spring Boot 3.0.4
+- Java 21
+- Gradle 8.5.1
+- Spring Boot 3.2.4
   - Spring Data JPA
   - Spring Security
 - Vault
