@@ -36,7 +36,7 @@ Clean Architecture
 ### todolist-adapter
 - interface adapters 
 - 외부 입력과 출력에 대한 정의
-- contoller: **web** 통신을 위한 API 인터페이스
+- controller: **web** 통신을 위한 API 인터페이스
 - gateways: **DB** 드라이버와 통신을 위한 인터페이스 
  
 
