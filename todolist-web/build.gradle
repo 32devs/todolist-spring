@@ -1,13 +1,14 @@
 dependencies {
     implementation project(':todolist-biz')
+    implementation project(':todolist-domain')
     implementation project(':todolist-common')
-    implementation project(':todolist-dal')
+    implementation project(':todolist-dal') // deprecated
     implementation('org.springframework.boot:spring-boot-starter-web')
     implementation('org.springframework.boot:spring-boot-starter-validation')
     implementation('org.springframework.boot:spring-boot-starter-security')
     implementation('org.springframework.boot:spring-boot-starter-thymeleaf')
 
-    implementation('io.jsonwebtoken:jjwt:0.9.1')   //자바 JWT 라이브러리
+    implementation('io.jsonwebtoken:jjwt:0.12.5')   //자바 JWT 라이브러리
     implementation('javax.xml.bind:jaxb-api:2.3.1') //XML 문서와 Java 객체 간 매핑 자동화
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${springDocOpenApiVersion}") // api 문서 자동화
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
