@@ -14,7 +14,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import kr.co.devs32.todolist.domain.auth.domain.User;
-import kr.co.devs32.todolist.domain.auth.service.UserAuthUseCases;
+import kr.co.devs32.todolist.domain.auth.service.AuthUseCases;
 import kr.co.devs32.todolist.domain.auth.service.UserUseCases;
 import kr.co.devs32.todolist.web.auth.model.AuthRole;
 import kr.co.devs32.todolist.web.auth.model.UserAuthenticationToken;
@@ -22,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class JwtTokenProvider {
+public class JwtProvider {
 	public static final String ACCESS_TOKEN_HEADER_NAME = "todo-at";
 	public static final String REFRESH_TOKEN_HEADER_NAME = "todo-rt";
 	public static final String CLAIM_USER_ID = "userId";
@@ -35,7 +35,7 @@ public class JwtTokenProvider {
 	private long refreshTokenTime;
 
 	private final UserUseCases userUseCases;
-	private final UserAuthUseCases userAuthUseCases;
+	private final AuthUseCases userAuthUseCases;
 
 	public String generateAccessToken(User user) {
 		return generateAccessToken(user, accessTokenTime * 1000);
@@ -59,10 +59,14 @@ public class JwtTokenProvider {
 	public Authentication getAuthentication(String token) {
 		Claims claims = getClaims(token);
 		Long id = (Long)claims.get(CLAIM_USER_ID);
-		User user = userUseCases.findById(id);
+		User user = userUseCases.get(id);
 		AuthRole role = AuthRole.valueOf((String)claims.get(CLAIM_ROLE));
 		Set<SimpleGrantedAuthority> authorities = Set.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
 		return new UserAuthenticationToken(user, authorities);
+	}
+
+	public void validate(String token) {
+		getClaims(token);
 	}
 
 	public Claims getClaims(String token) {

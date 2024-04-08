@@ -1,5 +1,6 @@
 package kr.co.devs32.todolist.domain.auth.service;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -22,5 +23,11 @@ public class UserService implements UserUseCases {
     @Override
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public User get(Long id) {
+        return userRepository.get(id)
+            .orElseThrow(() -> new NoSuchElementException("not found user"));
     }
 }

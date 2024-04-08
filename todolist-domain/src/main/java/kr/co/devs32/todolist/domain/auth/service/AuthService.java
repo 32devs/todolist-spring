@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
-public class AuthService implements UserAuthUseCases {
+public class AuthService implements AuthUseCases {
 
 	private final UserUseCases userUseCases;
 	private final RefreshTokenRepository refreshTokenRepository;
@@ -26,12 +26,12 @@ public class AuthService implements UserAuthUseCases {
 	}
 
 	@Override
-	public User signIn(String email, String password) throws IllegalAccessException {
+	public User signIn(String email, String password) {
 		User user = userUseCases.findByEmail(email)
 			.orElseThrow(() -> new NoSuchElementException("user not found"));
 
 		if (user.isMatchPassword(password)) {
-			throw new IllegalAccessException("password not match");
+			throw new IllegalStateException("password not match");
 		}
 
 		return user;

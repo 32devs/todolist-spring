@@ -13,5 +13,5 @@ public interface UserUseCases {
 	Optional<User> findByEmail(String email);
 
 	// 이메일로 회원 조회
-	User findById(Long id);
+	User get(Long id);
 }

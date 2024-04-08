@@ -3,13 +3,13 @@ package kr.co.devs32.todolist.domain.auth.service;
 import kr.co.devs32.todolist.domain.auth.domain.RefreshToken;
 import kr.co.devs32.todolist.domain.auth.domain.User;
 
-public interface UserAuthUseCases {
+public interface AuthUseCases {
 
 	// 회원가입
 	Long signUp(User user);
 
 	// 로그인
-	User signIn(String email, String password) throws Exception;
+	User signIn(String email, String password);
 
 	// 리프레시 토큰조회
 	RefreshToken findByRefreshToken(String token);
