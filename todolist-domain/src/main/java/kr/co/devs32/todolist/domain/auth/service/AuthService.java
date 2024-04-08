@@ -1,6 +1,7 @@
 package kr.co.devs32.todolist.domain.auth.service;
 
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -38,8 +39,8 @@ public class AuthService implements AuthUseCases {
 	}
 
 	@Override
-	public RefreshToken findByRefreshToken(String token) {
-		return refreshTokenRepository.findByToken(token).orElse(null);
+	public Optional<RefreshToken> findByRefreshToken(String token) {
+		return refreshTokenRepository.findByToken(token);
 	}
 
 	@Override

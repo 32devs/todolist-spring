@@ -13,6 +13,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import kr.co.devs32.todolist.domain.auth.domain.RefreshToken;
 import kr.co.devs32.todolist.domain.auth.domain.User;
 import kr.co.devs32.todolist.domain.auth.service.AuthUseCases;
 import kr.co.devs32.todolist.domain.auth.service.UserUseCases;
@@ -35,7 +36,7 @@ public class JwtProvider {
 	private long refreshTokenTime;
 
 	private final UserUseCases userUseCases;
-	private final AuthUseCases userAuthUseCases;
+	private final AuthUseCases authUseCases;
 
 	public String generateAccessToken(User user) {
 		return generateAccessToken(user, accessTokenTime * 1000);
@@ -66,6 +67,11 @@ public class JwtProvider {
 	}
 
 	public void validate(String token) {
+		Optional<RefreshToken> optional = authUseCases.findByRefreshToken(token);
+		if(optional.isPresent()) {
+			// 폐기된 토큰이라면 거절
+			throw new IllegalStateException("this is revoked token");
+		}
 		getClaims(token);
 	}
 

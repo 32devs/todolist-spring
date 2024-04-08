@@ -1,12 +1,11 @@
 package kr.co.devs32.todolist.dal.jpa.user;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
 
 @Entity
 @Table(name = "users")
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserJpaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

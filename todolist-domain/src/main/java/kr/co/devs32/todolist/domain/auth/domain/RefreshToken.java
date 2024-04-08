@@ -1,9 +1,11 @@
 package kr.co.devs32.todolist.domain.auth.domain;
 
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 public class RefreshToken {
+    @Setter
     private Long id;
     private Long userId;
     private String token;

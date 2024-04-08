@@ -17,6 +17,14 @@ public class RefreshJpaRepository implements RefreshTokenRepository {
     private final RefreshTokenJpaEntityRepository repository;
 
     @Override
+    public RefreshToken persist(RefreshToken token) {
+        RefreshTokenJpaEntity entity = RefreshTokenMapper.INSTANCE.convert(token);
+        repository.save(entity);
+        token.setId(entity.getId());
+        return token;
+    }
+
+    @Override
     public Optional<RefreshToken> findByToken(String token) {
         Optional<RefreshTokenJpaEntity> optional = repository.findByRefreshToken(token);
         return optional.map(RefreshTokenMapper.INSTANCE::convert);

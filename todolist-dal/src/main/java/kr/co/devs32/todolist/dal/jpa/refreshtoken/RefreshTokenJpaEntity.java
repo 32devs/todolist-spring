@@ -1,9 +1,8 @@
 package kr.co.devs32.todolist.dal.jpa.refreshtoken;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
 
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
 @Table(name = "refresh_token")
@@ -16,6 +15,6 @@ public class RefreshTokenJpaEntity {
     @Column(name = "user_id", nullable = false, unique = true)
     private Long userId;
 
-    @Column(name = "refresh_token", nullable = false)
-    private String refreshToken;
+    @Column(name = "token", nullable = false)
+    private String token;
 }
