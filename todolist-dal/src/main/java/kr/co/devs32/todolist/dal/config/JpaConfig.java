@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Configuration
-@EnableJpaRepositories(basePackages = {"kr.co.devs32.todolist.dal.repository"})
-@EntityScan(basePackages = {"kr.co.devs32.todolist.dal.entity"})
+@EnableJpaRepositories(basePackages = {"kr.co.devs32.todolist.dal"})
+@EntityScan(basePackages = {"kr.co.devs32.todolist.dal"})
 public class JpaConfig {
 }

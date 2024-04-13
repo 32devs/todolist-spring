@@ -1,16 +1,17 @@
 package kr.co.devs32.todolist.biz.service.auth;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
 import kr.co.devs32.todolist.biz.mapper.UserMapper;
 import kr.co.devs32.todolist.common.dto.auth.UserDTO;
 import kr.co.devs32.todolist.common.request.auth.AddUserRequest;
 import kr.co.devs32.todolist.dal.entity.auth.UserEntity;
 import kr.co.devs32.todolist.dal.repository.auth.UserEntityRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
-@Service
+@Service("bizUserService")
 public class UserService {
     private final UserEntityRepository userEntityRepository;
 

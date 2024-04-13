@@ -8,11 +8,11 @@ public class RefreshToken {
     @Setter
     private Long id;
     private Long userId;
-    private String token;
+    private String refreshToken;
 
-    public RefreshToken(Long userId, String token) {
+    public RefreshToken(Long userId, String refreshToken) {
         this.id = null;
         this.userId = userId;
-        this.token = token;
+        this.refreshToken = refreshToken;
     }
 }

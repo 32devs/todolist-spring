@@ -15,6 +15,6 @@ public class RefreshTokenJpaEntity {
     @Column(name = "user_id", nullable = false, unique = true)
     private Long userId;
 
-    @Column(name = "token", nullable = false)
-    private String token;
+     @Column(name = "refresh_token", nullable = false)
+    private String refreshToken;
 }
