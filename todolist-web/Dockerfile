@@ -1,4 +1,4 @@
-FROM openjdk:17
+FROM openjdk:21
 RUN mkdir "/app"
 COPY /build/libs/app.jar /app/app.jar
 
