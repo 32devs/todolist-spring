@@ -63,6 +63,16 @@ public class WebJwtSecurityConfig {
 
 	}
 
+	@Bean
+	public JwtAuthenticationFilter jwtAuthenticationFilter() {
+		return new JwtAuthenticationFilter(tokenProvider);
+	}
+
+	@Bean
+	public BCryptPasswordEncoder bCryptPasswordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+
 	private RequestMatcher[] authEndpoints() {
 		return new RequestMatcher[] {
 			new AntPathRequestMatcher("/api/v1/auth/signIn", HttpMethod.POST.name()), // 로그인
@@ -80,15 +90,5 @@ public class WebJwtSecurityConfig {
 
 	private RequestMatcher apiEndpoint() {
 		return new AntPathRequestMatcher("/api/**");
-	}
-
-	@Bean
-	public JwtAuthenticationFilter jwtAuthenticationFilter() {
-		return new JwtAuthenticationFilter(tokenProvider);
-	}
-
-	@Bean
-	public BCryptPasswordEncoder bCryptPasswordEncoder() {
-		return new BCryptPasswordEncoder();
 	}
 }
