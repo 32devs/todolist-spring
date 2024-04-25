@@ -1,24 +1,18 @@
 package kr.co.devs32.todolist.biz.service.auth;
 
-import java.util.Collections;
-import java.util.Date;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Header;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import jakarta.servlet.http.HttpServletResponse;
 import kr.co.devs32.todolist.common.dto.auth.UserDTO;
-import kr.co.devs32.todolist.common.jwt.JwtProperties;
 import kr.co.devs32.todolist.dal.entity.auth.RefreshTokenEntity;
 import kr.co.devs32.todolist.dal.repository.auth.RefreshTokenEntityRepository;
+import kr.co.devs32.todolist.web.security.token.jwt.JwtProperties;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

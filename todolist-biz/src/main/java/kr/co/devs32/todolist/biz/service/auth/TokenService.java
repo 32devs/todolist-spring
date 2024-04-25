@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import kr.co.devs32.todolist.common.dto.auth.UserDTO;
-import kr.co.devs32.todolist.common.response.auth.TokenResponse;
+import kr.co.devs32.todolist.web.legacy.response.TokenResponse;
 
 @Service
 public class TokenService {
