@@ -15,7 +15,7 @@ public class SecurityUtils {
 			UserAuthenticationToken token = (UserAuthenticationToken)SecurityContextHolder.getContext()
 				.getAuthentication()
 				.getPrincipal();
-			return token.getUser();
+			return token.getUser().getDetail();
 		} else {
 			throw new IllegalStateException("not support authentication");
 		}

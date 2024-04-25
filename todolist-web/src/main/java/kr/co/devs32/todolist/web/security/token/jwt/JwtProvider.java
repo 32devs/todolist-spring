@@ -6,7 +6,6 @@ import javax.crypto.SecretKey;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
@@ -17,8 +16,7 @@ import kr.co.devs32.todolist.domain.auth.domain.RefreshToken;
 import kr.co.devs32.todolist.domain.auth.domain.User;
 import kr.co.devs32.todolist.domain.auth.usecase.AuthUseCases;
 import kr.co.devs32.todolist.domain.auth.usecase.UserUseCases;
-import kr.co.devs32.todolist.web.security.model.AuthRole;
-import kr.co.devs32.todolist.web.security.model.UserAuthenticationToken;
+import kr.co.devs32.todolist.web.security.model.*;
 import lombok.RequiredArgsConstructor;
 
 @Component
@@ -60,10 +58,14 @@ public class JwtProvider {
 	public Authentication getAuthentication(String token) {
 		Claims claims = getClaims(token);
 		Long id = (Long)claims.get(CLAIM_USER_ID);
-		User user = userUseCases.get(id);
 		AuthRole role = AuthRole.valueOf((String)claims.get(CLAIM_ROLE));
-		Set<SimpleGrantedAuthority> authorities = Set.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
-		return new UserAuthenticationToken(user, authorities);
+		AuthUser authUser;
+		if(role == AuthRole.USER) {
+			authUser = new AuthUser(userUseCases.get(id));
+		} else {
+			throw new IllegalStateException("not support role: " + role);
+		}
+		return new UserAuthenticationToken(authUser);
 	}
 
 	public void validateAccessToken(String token) {

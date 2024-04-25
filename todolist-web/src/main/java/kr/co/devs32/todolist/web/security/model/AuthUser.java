@@ -8,9 +8,15 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import kr.co.devs32.todolist.domain.auth.domain.User;
+import lombok.Getter;
 
+@Getter
 public class AuthUser implements UserDetails {
-	User user;
+	private final User detail;
+
+	public AuthUser(User detail) {
+		this.detail = detail;
+	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -19,12 +25,12 @@ public class AuthUser implements UserDetails {
 
 	@Override
 	public String getPassword() {
-		return user.getPassword();
+		return detail.getPassword();
 	}
 
 	@Override
 	public String getUsername() {
-		return user.getEmail();
+		return detail.getEmail();
 	}
 
 	@Override

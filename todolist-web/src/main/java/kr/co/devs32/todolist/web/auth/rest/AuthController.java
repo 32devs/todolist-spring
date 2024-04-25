@@ -25,7 +25,7 @@ public class AuthController {
 
 	//회원가입
 	@PostMapping("/signUp")
-	@Operation(summary = "이메일, 비밀번호로 로그인", description = "이메일과 비밀번호를 통한 일반적인 로그인")
+	@Operation(summary = "회원가입", description = "이메일과 비밀번호로 회원가입")
 	public ResponseEntity<Long> signUp(@Valid @RequestBody SignUpRequest request) {
 		User user = new User(request.getEmail(), request.getPassword());
 		return ResponseEntity.ok(authUseCases.signUp(user));
@@ -33,6 +33,7 @@ public class AuthController {
 
 	//로그인
 	@PostMapping("/signIn")
+	@Operation(summary = "이메일, 비밀번호로 로그인", description = "이메일과 비밀번호를 통한 일반적인 로그인")
 	public ResponseEntity<Void> signIn(@RequestBody SignInRequest request, HttpServletResponse response) {
 		User user = authUseCases.signIn(request.getEmail(), request.getPassword());
 		response.setHeader(JwtProvider.ACCESS_TOKEN_HEADER_NAME, tokenProvider.generateAccessToken(user));
@@ -48,7 +49,7 @@ public class AuthController {
 		, HttpServletResponse response) {
 		tokenProvider.validateRefreshToken(refreshToken);
 		UserAuthenticationToken authentication = (UserAuthenticationToken) tokenProvider.getAuthentication(refreshToken);
-		User user = authentication.getUser();
+		User user = authentication.getUser().getDetail();
 		response.setHeader(JwtProvider.ACCESS_TOKEN_HEADER_NAME, tokenProvider.generateAccessToken(user));
 		response.setHeader(JwtProvider.ACCESS_TOKEN_HEADER_NAME, tokenProvider.generateRefreshToken(user));
 		return ResponseEntity.ok(null);

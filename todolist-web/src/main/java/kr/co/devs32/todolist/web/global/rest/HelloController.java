@@ -6,14 +6,11 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import kr.co.devs32.todolist.biz.service.HelloService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
 public class HelloController {
-
-	private final HelloService helloService;
 
 	@GetMapping("/hello")
 	@Operation(summary = "this is just hello api")
@@ -23,6 +20,6 @@ public class HelloController {
 		@ApiResponse(responseCode = "500", description = "Internal server error")
 	})
 	public String hello() {
-		return helloService.hello();
+		return "hello Devs32";
 	}
 }

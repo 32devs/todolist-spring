@@ -1,28 +1,24 @@
 package kr.co.devs32.todolist.web.security.model;
 
-import java.util.Collection;
-
 import org.springframework.security.authentication.AbstractAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
 
-import kr.co.devs32.todolist.domain.auth.domain.User;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 @Getter
 @EqualsAndHashCode(callSuper = false)
 public class UserAuthenticationToken extends AbstractAuthenticationToken {
-	private final User user;
+	private final AuthUser user;
 
-	public UserAuthenticationToken(User user, Collection<? extends GrantedAuthority> authorities) {
-		super(authorities);
+	public UserAuthenticationToken(AuthUser user) {
+		super(user.getAuthorities());
 		this.user = user;
 		setDetails(user);
 	}
 
 	@Override
 	public Object getCredentials() {
-		return user.getEmail();
+		return user.getUsername();
 	}
 
 	@Override
