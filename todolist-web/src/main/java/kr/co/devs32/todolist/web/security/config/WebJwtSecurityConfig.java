@@ -48,6 +48,7 @@ public class WebJwtSecurityConfig {
 			auth -> auth
 				.requestMatchers(permittedEndpoints()).permitAll()
 				.requestMatchers(authEndpoints()).permitAll()
+				.requestMatchers(metricEndpoints()).permitAll()
 				.requestMatchers(apiEndpoint()).authenticated()
 				.anyRequest().denyAll()
 		);
@@ -79,6 +80,12 @@ public class WebJwtSecurityConfig {
 			new AntPathRequestMatcher("/api/v1/auth/signUp", HttpMethod.POST.name()), // 회원가입
 			new AntPathRequestMatcher("/api/v1/auth/refresh", HttpMethod.POST.name()), // 토큰 재발급
 			new AntPathRequestMatcher("/api/v1/auth/logout", HttpMethod.POST.name()), // 로그아웃
+		};
+	}
+
+	private RequestMatcher[] metricEndpoints() {
+		return new RequestMatcher[] {
+			new AntPathRequestMatcher("/hello", HttpMethod.GET.name()), // 로그인
 		};
 	}
 
