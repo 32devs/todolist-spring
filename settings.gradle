@@ -1,6 +1,6 @@
 rootProject.name = 'todolist'
 include 'todolist-web'
-include 'todolist-biz'
 include 'todolist-common'
 include 'todolist-dal'
+include 'todolist-domain'
 
