@@ -16,7 +16,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import kr.co.devs32.todolist.domain.auth.domain.User;
+import kr.co.devs32.todolist.web.security.model.UserAuthenticationToken;
 import kr.co.devs32.todolist.web.security.token.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -51,7 +51,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		jwtProvider.validateRefreshToken(refreshToken);
 		Authentication authentication = jwtProvider.getAuthentication(refreshToken);
 		SecurityContextHolder.getContext().setAuthentication(authentication);
-		String newAccessToken = jwtProvider.generateAccessToken((User)authentication.getPrincipal());
+		UserAuthenticationToken userAuthenticationToken = (UserAuthenticationToken) authentication;
+		String newAccessToken = jwtProvider.generateAccessToken(userAuthenticationToken.getUser().getDetail());
 		response.setHeader(ACCESS_TOKEN_HEADER_NAME, newAccessToken);
 	}
 }

@@ -37,7 +37,7 @@ public class AuthController {
 	public ResponseEntity<Void> signIn(@RequestBody SignInRequest request, HttpServletResponse response) {
 		User user = authUseCases.signIn(request.getEmail(), request.getPassword());
 		response.setHeader(JwtProvider.ACCESS_TOKEN_HEADER_NAME, tokenProvider.generateAccessToken(user));
-		response.setHeader(JwtProvider.ACCESS_TOKEN_HEADER_NAME, tokenProvider.generateRefreshToken(user));
+		response.setHeader(JwtProvider.REFRESH_TOKEN_HEADER_NAME, tokenProvider.generateRefreshToken(user));
 		return ResponseEntity.ok(null);
 	}
 

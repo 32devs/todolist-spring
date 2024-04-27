@@ -1,8 +1,8 @@
 package kr.co.devs32.todolist.web.security.token.jwt;
 
+import java.security.*;
+import java.security.spec.*;
 import java.util.*;
-
-import javax.crypto.SecretKey;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -10,8 +10,6 @@ import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
 import kr.co.devs32.todolist.domain.auth.domain.RefreshToken;
 import kr.co.devs32.todolist.domain.auth.domain.User;
 import kr.co.devs32.todolist.domain.auth.usecase.AuthUseCases;
@@ -26,6 +24,7 @@ public class JwtProvider {
 	public static final String REFRESH_TOKEN_HEADER_NAME = "todo-rt";
 	public static final String CLAIM_USER_ID = "userId";
 	public static final String CLAIM_ROLE = "role";
+	public static final String KEY_FACTORY_ALGORITHM = "EC";
 	private final JwtProperties jwtProperties;
 
 	@Value("${jwt.accessToken-validity-in-seconds}")
@@ -57,8 +56,8 @@ public class JwtProvider {
 	// 인증
 	public Authentication getAuthentication(String token) {
 		Claims claims = getClaims(token);
-		Long id = (Long)claims.get(CLAIM_USER_ID);
-		AuthRole role = AuthRole.valueOf((String)claims.get(CLAIM_ROLE));
+		Long id = claims.get(CLAIM_USER_ID, Long.class);
+		AuthRole role = AuthRole.valueOf(claims.get(CLAIM_ROLE, String.class));
 		AuthUser authUser;
 		if(role == AuthRole.USER) {
 			authUser = new AuthUser(userUseCases.get(id));
@@ -83,7 +82,7 @@ public class JwtProvider {
 
 	public Claims getClaims(String token) {
 		return Jwts.parser()
-			.verifyWith(getSigningKey())
+			.verifyWith(getPublicKey())
 			.build()
 			.parseSignedClaims(token)
 			.getPayload();
@@ -97,13 +96,30 @@ public class JwtProvider {
 			.issuedAt(now)
 			.expiration(expiration)
 			.claims(claims)
-			.signWith(getSigningKey())
+			.signWith(getSigningKey(), Jwts.SIG.ES256)
 			.compact();
 	}
 
-	private SecretKey getSigningKey() {
-		byte[] keyBytes = Decoders.BASE64.decode(jwtProperties.getSecretKey());
-		return Keys.hmacShaKeyFor(keyBytes);
+	private PrivateKey getSigningKey() {
+		try {
+			byte[] decodedPrivateKey = Base64.getDecoder().decode(jwtProperties.getPrivateKey());
+			PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(decodedPrivateKey);
+			KeyFactory keyFactory = KeyFactory.getInstance(KEY_FACTORY_ALGORITHM);
+			return keyFactory.generatePrivate(keySpec);
+		} catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+			throw new IllegalStateException("Failed to get private key", e);
+		}
+	}
+
+	private PublicKey getPublicKey() {
+		try {
+			byte[] decodedPublicKey = Base64.getDecoder().decode(jwtProperties.getPublicKey());
+			X509EncodedKeySpec keySpec = new X509EncodedKeySpec(decodedPublicKey);
+			KeyFactory keyFactory = KeyFactory.getInstance(KEY_FACTORY_ALGORITHM);
+			return keyFactory.generatePublic(keySpec);
+		} catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+			throw new IllegalStateException("Failed to get public key", e);
+		}
 	}
 
 }

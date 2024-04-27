@@ -2,8 +2,8 @@ spring:
     datasource:
         driver-class-name: org.postgresql.Driver
         url: jdbc:postgresql://aws-0-ap-northeast-2.pooler.supabase.com:5432/postgres
-        username: ${databaseUsername}
-        password: ${databasePassword}
+        username: ${database.username}
+        password: ${database.password}
     jpa:
         show-sql: true
         properties:
@@ -11,6 +11,12 @@ spring:
                 default_schema: public
                 format_sql: true
         defer-datasource-initialization: true
+jwt:
+    issuer: todolist-springboot
+    public-key: ${jwt.publicKey}
+    private-key: ${jwt.privateKey}
+    accessToken-validity-in-seconds: 3600 # accessToken 유효시간 (1시간)
+    refreshToken-validity-in-seconds: 604800 #refreshToken 유효시간 (7일)
 springdoc:
     swagger-ui:
         path: /doc/swagger-ui.html
