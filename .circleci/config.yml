@@ -68,8 +68,8 @@ jobs:
                                 docker pull devs32/todolist-springboot:latest
                                 docker stop todolist-springboot || true
                                 docker rm todolist-springboot || true
-                                docker run -d --name todolist-springboot -p 10001:8080 -e JVM_OPTS=${JVM_OPTS} devs32/todolist-springboot:latest
-                                docker logs todolist-springboot
+                                docker run -d --name todolist-springboot -p 10001:8080 -e JVM_OPTS='${JVM_OPTS}' devs32/todolist-springboot:latest
+                                /home/devs32/script/
                             EOF
 
 workflows:
