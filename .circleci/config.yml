@@ -63,7 +63,15 @@ jobs:
         steps:
             -   run:
                     name: connect ssh and run
-                    command: ssh -v $SSH_USER@$SSH_HOST /home/$SSH_USER/script/deploy_springboot.sh
+#                    command: ssh -v $SSH_USER@$SSH_HOST /home/$SSH_USER/script/deploy_springboot.sh
+                    command: | 
+                            ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST << 'EOF'
+                                docker pull devs32/todolist-springboot:latest
+                                docker stop todolist-springboot || true
+                                docker rm todolist-springboot || true
+                                docker run -d --name todolist-springboot -p 10001:8080 -e JVM_OPTS=${JVM_OPTS} devs32/todolist-springboot:latest
+                                ./home/$SSH_USER/script/springboot_check.sh
+                            EOF
 
 workflows:
     develop-pipeline:
