@@ -69,8 +69,6 @@ jobs:
                                 docker stop todolist-springboot || true
                                 docker rm todolist-springboot || true
                                 docker run -d --name todolist-springboot -p 10001:8080 -e JVM_OPTS=${JVM_OPTS} devs32/todolist-springboot:latest
-                                export WOW=${JVM_OPTS}
-                                echo $WOW
                                 docker logs todolist-springboot
                             EOF
 

@@ -3,4 +3,5 @@ RUN mkdir "/app"
 COPY /build/libs/app.jar /app/app.jar
 
 EXPOSE 8080
-ENTRYPOINT exec java "$JVM_OPTS" -jar /app/app.jar
+#CMD echo "$JVM_OPTS"
+ENTRYPOINT exec java $JVM_OPTS -jar /app/app.jar
