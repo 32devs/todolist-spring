@@ -60,6 +60,8 @@ jobs:
     run via ssh:
         machine:
             image: ubuntu-2204:2024.01.1
+        environment:
+            JVM_OPTS: ${JVM_OPTS}
         steps:
             -   run:
                     name: connect ssh and run
