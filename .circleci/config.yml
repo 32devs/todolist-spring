@@ -30,7 +30,7 @@ jobs:
             - checkout
             -   run:
                     name: gradle build
-                    command: ./gradlew clean build -Dorg.gradle.jvmargs="${JVM_OPTS}"
+                    command: ./gradlew clean build
             - setup_remote_docker
             -   run:
                     name: docker build
@@ -64,12 +64,12 @@ jobs:
             -   run:
                     name: connect ssh and run
                     command: | 
-                            ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST \<< 'EOF'
+                            ssh -o StrictHostKeyChecking=no ${SSH_USER}@${SSH_HOST} \<< 'EOF'
                                 docker pull devs32/todolist-springboot:latest
                                 docker stop todolist-springboot || true
                                 docker rm todolist-springboot || true
                                 docker run -d --name todolist-springboot -p 10001:8080 -e JVM_OPTS=${JVM_OPTS} devs32/todolist-springboot:latest
-                                ./home/$SSH_USER/script/springboot_check.sh
+                                ./home/${SSH_USER}/script/springboot_check.sh
                             EOF
 
 workflows:
