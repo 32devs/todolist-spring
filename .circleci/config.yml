@@ -64,7 +64,7 @@ jobs:
             -   run:
                     name: connect ssh and run
                     command: ssh -o StrictHostKeyChecking=no ${SSH_USER}@${SSH_HOST}
-                        "JVM_OPTS=${JVM_OPTS} bash -s" \<< 'EOF'
+                        'JVM_OPTS="'${JVM_OPTS}'" bash -s' \<< 'EOF'
                             docker pull devs32/todolist-springboot:latest
                             docker stop todolist-springboot || true
                             docker rm todolist-springboot || true
