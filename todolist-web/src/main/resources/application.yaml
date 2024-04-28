@@ -19,7 +19,7 @@ spring:
                 min-idle: 2
         host: redis-19009.c294.ap-northeast-1-2.ec2.redns.redis-cloud.com
         port: 19009
-        password: ETEe2OyGEzldiMpplBWLnbcuH6j6sZ5Z
+        password: ${redis.password}
 jwt:
     issuer: todolist-springboot
     public-key: ${jwt.publicKey}
