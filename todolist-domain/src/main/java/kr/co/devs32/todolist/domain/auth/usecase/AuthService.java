@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import kr.co.devs32.todolist.domain.auth.domain.RefreshToken;
 import kr.co.devs32.todolist.domain.auth.domain.User;
 import kr.co.devs32.todolist.domain.auth.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
@@ -39,13 +38,12 @@ public class AuthService implements AuthUseCases {
 	}
 
 	@Override
-	public Optional<RefreshToken> findByRefreshToken(String token) {
-		return refreshTokenRepository.findByToken(token);
+	public Optional<String> findByRefreshToken(String token) {
+		return refreshTokenRepository.getRevokedToken(token);
 	}
 
 	@Override
-	public void revokeRefreshToken(Long userId, String token) {
-		RefreshToken refreshToken = new RefreshToken(userId, token);
-		refreshTokenRepository.persist(refreshToken);
+	public void revokeRefreshToken(String token) {
+		refreshTokenRepository.revokeToken(token);
 	}
 }

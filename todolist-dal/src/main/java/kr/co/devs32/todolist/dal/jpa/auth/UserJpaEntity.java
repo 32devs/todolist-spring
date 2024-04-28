@@ -1,4 +1,4 @@
-package kr.co.devs32.todolist.dal.jpa.user;
+package kr.co.devs32.todolist.dal.jpa.auth;
 
 import jakarta.persistence.*;
 import lombok.Getter;

@@ -66,7 +66,7 @@ public class AuthController {
 		response.setHeader(JwtProvider.ACCESS_TOKEN_HEADER_NAME, tokenProvider.generateAccessToken(user, 0));
 
 		// 리프레시토큰 블랙리스트 처리
-		authUseCases.revokeRefreshToken(user.getId(), refreshToken);
+		authUseCases.revokeRefreshToken(refreshToken);
 		return ResponseEntity.ok(null);
 	}
 

@@ -1,9 +1,9 @@
-package kr.co.devs32.todolist.dal.mapper;
+package kr.co.devs32.todolist.dal.jpa.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-import kr.co.devs32.todolist.dal.jpa.user.UserJpaEntity;
+import kr.co.devs32.todolist.dal.jpa.auth.UserJpaEntity;
 import kr.co.devs32.todolist.domain.auth.domain.User;
 
 @Mapper

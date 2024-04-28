@@ -5,7 +5,7 @@ dependencies {
     implementation ('org.springframework.boot:spring-boot-starter-data-jpa')
     implementation ('org.springframework.boot:spring-boot-starter-jdbc')
     implementation ('org.postgresql:postgresql')
-//    implementation ('org.mariadb.jdbc:mariadb-java-client')
+    implementation ('org.springframework.boot:spring-boot-starter-data-redis')
 }
 
 bootJar {

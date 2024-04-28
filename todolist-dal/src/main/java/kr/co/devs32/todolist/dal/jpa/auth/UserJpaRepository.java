@@ -1,10 +1,10 @@
-package kr.co.devs32.todolist.dal.jpa.user;
+package kr.co.devs32.todolist.dal.jpa.auth;
 
 import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
-import kr.co.devs32.todolist.dal.mapper.UserJapEntityMapper;
+import kr.co.devs32.todolist.dal.jpa.mapper.UserJapEntityMapper;
 import kr.co.devs32.todolist.domain.auth.domain.User;
 import kr.co.devs32.todolist.domain.auth.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

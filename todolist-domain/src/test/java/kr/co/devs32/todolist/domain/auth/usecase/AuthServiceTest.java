@@ -1,7 +1,6 @@
 package kr.co.devs32.todolist.domain.auth.usecase;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -16,7 +15,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import kr.co.devs32.todolist.domain.auth.domain.RefreshToken;
 import kr.co.devs32.todolist.domain.auth.domain.User;
 import kr.co.devs32.todolist.domain.auth.repository.RefreshTokenRepository;
 
@@ -104,14 +102,13 @@ class AuthServiceTest {
     void testFindByRefreshToken() {
         // given
         String testToken = "test_token";
-        RefreshToken expectedToken = new RefreshToken(1L, testToken);
 
-        given(refreshTokenRepository.findByToken(testToken)).willReturn(Optional.of(expectedToken));
+        given(refreshTokenRepository.getRevokedToken(testToken)).willReturn(Optional.of(testToken));
 
         // when
-        Optional<RefreshToken> resultToken = authService.findByRefreshToken(testToken);
+        Optional<String> resultToken = authService.findByRefreshToken(testToken);
 
         // then
-        assertThat(resultToken, is(Optional.of(expectedToken)));
+        assertThat(resultToken).isPresent();
     }
 }

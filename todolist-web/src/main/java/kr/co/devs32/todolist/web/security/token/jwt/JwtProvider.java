@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import kr.co.devs32.todolist.domain.auth.domain.RefreshToken;
 import kr.co.devs32.todolist.domain.auth.domain.User;
 import kr.co.devs32.todolist.domain.auth.usecase.AuthUseCases;
 import kr.co.devs32.todolist.domain.auth.usecase.UserUseCases;
@@ -72,7 +71,7 @@ public class JwtProvider {
 	}
 
 	public void validateRefreshToken(String token) {
-		Optional<RefreshToken> optional = authUseCases.findByRefreshToken(token);
+		Optional<String> optional = authUseCases.findByRefreshToken(token);
 		if(optional.isPresent()) {
 			// 폐기된 토큰이라면 거절
 			throw new IllegalStateException("this is revoked token");
