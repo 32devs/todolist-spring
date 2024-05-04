@@ -5,7 +5,7 @@ FROM openjdk:21
 #RUN chmod +x /home/devs32/script/health_check.sh
 
 RUN mkdir "/app"
-COPY /todolist-web/build/libs/app.jar /app/app.jar
+COPY /build/libs/app.jar /app/app.jar
 
 EXPOSE 8080
 
