@@ -2,14 +2,15 @@ FROM openjdk:21
 RUN mkdir "/app"
 COPY /build/libs/app.jar /app/app.jar
 
-# Create a shell script
-RUN echo $'#!/bin/sh \n\
-echo "JVM options: $JVM_OPTS" \n\
-exec java $JVM_OPTS -jar /app/app.jar' \
-> /app/entrypoint.sh \
-&& chmod +x /app/entrypoint.sh
+# 스크립트 파일 복사 및 실행 권한 부여
+COPY health_check.sh /home/devs32/script/health_check.sh
+RUN chmod +x /home/devs32/script/health_check.sh
 
 EXPOSE 8080
 
-# Use the shell script as entry point
-ENTRYPOINT exec /app/entrypoint.sh
+# 환경 변수 설정을 고려할 수 있음 (필요한 경우)
+# ENV APP_URL="http://localhost:10001/hello"
+# ENV MAX_ATTEMPTS=10
+# ENV SLEEP_SECONDS=10
+
+ENTRYPOINT exec java $JVM_OPTS -jar /app/app.jar
