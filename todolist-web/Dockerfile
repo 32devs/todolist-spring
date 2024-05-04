@@ -2,7 +2,7 @@ FROM openjdk:21
 # 스크립트 파일 복사 및 실행 권한 부여
 RUN mkdir "/script"
 COPY /script/health_check.sh /script/health_check.sh
-RUN chmod +x /home/devs32/script/health_check.sh
+RUN chmod +x /script/health_check.sh
 
 RUN mkdir "/app"
 COPY /build/libs/app.jar /app/app.jar
