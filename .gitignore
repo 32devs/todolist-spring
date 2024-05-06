@@ -42,3 +42,4 @@ bin/
 /.idea/
 /.gradle/
 /todolist-biz/src/main/generated/
+/todolist-dal/src/main/generated/

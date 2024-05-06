@@ -5,18 +5,21 @@ import static kr.co.devs32.todolist.dal.redis.auth.RedisAuthConstant.getKeyRevok
 
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
 import io.micrometer.common.util.StringUtils;
 import kr.co.devs32.todolist.domain.auth.repository.RefreshTokenRepository;
-import lombok.RequiredArgsConstructor;
 
 @Repository
-@RequiredArgsConstructor
 public class RefreshTokenRedisRepository implements RefreshTokenRepository {
 
 	private final RedisTemplate<String, String> redisStringTemplate;
+
+	public RefreshTokenRedisRepository(@Qualifier("redisStringTemplate") RedisTemplate<String, String> redisTemplate){
+		this.redisStringTemplate = redisTemplate;
+	}
 
 	@Override
 	public void revokeToken(String token) {
