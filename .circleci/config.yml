@@ -12,7 +12,7 @@ executors:
 orbs:
     sonarcloud: sonarsource/sonarcloud@2.0.0
 
-ci_branch_only: &dev_branch_only
+ci_branch_only: &ci_branch_only
     filters:
         branches:
             only: /^(feat|fix|hotfix)/
