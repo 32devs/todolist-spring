@@ -9,6 +9,14 @@ executors:
         docker:
             -   image: circleci/buildpack-deps:stretch
 
+orbs:
+    sonarcloud: sonarsource/sonarcloud@2.0.0
+
+ci_branch_only: &dev_branch_only
+    filters:
+        branches:
+            only: /^(feat|fix|hotfix)/
+
 dev_branch_only: &dev_branch_only
     filters:
         branches:
@@ -28,6 +36,7 @@ jobs:
             IMAGE_NAME: devs32/todolist-springboot
         steps:
             - checkout
+            - sonarcloud/scan
             -   run:
                     name: gradle build
                     command: ./gradlew clean build
@@ -84,3 +93,7 @@ workflows:
                     requires:
                         - push
                     <<: *dev_branch_only
+    ci-pipeline:
+        jobs:
+            -   build:
+                    <<: *ci_branch_only
