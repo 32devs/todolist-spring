@@ -31,10 +31,6 @@ public class TodolistResponse<T> {
 		return new TodolistResponse<>(HttpStatus.OK, true, data, null, null);
 	}
 
-	public static <T> TodolistResponse<T> fail(String message) {
-		return new TodolistResponse<>(HttpStatus.OK, false, null, null, message);
-	}
-
 	public static <T> TodolistResponse<T> error(TodolistException exception) {
 		return new TodolistResponse<>(exception.getHttpStatus(), false, null, exception, exception.getMessage());
 	}
