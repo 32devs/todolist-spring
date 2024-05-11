@@ -15,7 +15,7 @@ orbs:
 ci_branch_only: &ci_branch_only
     filters:
         branches:
-            only: /^(feat|fix|hotfix)/
+            only: /^(feat|fix|hotfix).*/
 
 dev_branch_only: &dev_branch_only
     filters:
