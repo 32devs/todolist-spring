@@ -36,7 +36,9 @@ jobs:
             IMAGE_NAME: devs32/todolist-springboot
         steps:
             - checkout
-            - sonarqube/scan
+            - sonarqube/scan:
+                  context: sonarcloud
+                  scanner_parameters: -Dsonar.projectKey=Devs32_todolist-springboot
             -   run:
                     name: gradle build
                     command: ./gradlew clean build
