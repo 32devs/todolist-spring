@@ -103,6 +103,8 @@ workflows:
                     <<: *dev_branch_only
     ci-pipeline:
         jobs:
-            -   build:
+            -   static analytics:
                     context: sonarcloud
+                    <<: *ci_branch_only
+            -   build:
                     <<: *ci_branch_only
