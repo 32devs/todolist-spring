@@ -36,7 +36,6 @@ jobs:
             IMAGE_NAME: devs32/todolist-springboot
         steps:
             - checkout
-            - sonarcloud/scan
             -   run:
                     name: gradle build
                     command: ./gradlew clean build
@@ -79,6 +78,15 @@ jobs:
                         docker rm todolist-springboot || true; \
                         docker run -d --name todolist-springboot -p 10001:8080 -e \"JVM_OPTS=${JVM_OPTS}\" devs32/todolist-springboot:latest; \
                         /home/devs32/script/health_check.sh"
+    static analytics:
+        docker:
+            - image: node:latest
+        environment:
+            SONAR_PROJECT_KEY: "Devs32_todolist-springboot"
+            SONAR_ORGANIZATION: "devs32"
+        steps:
+            - checkout
+            - sonarcloud/scan
 
 workflows:
     develop-pipeline:
