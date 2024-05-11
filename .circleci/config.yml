@@ -36,7 +36,7 @@ jobs:
             IMAGE_NAME: devs32/todolist-springboot
         steps:
             - checkout
-            - sonarcloud/scan
+            - sonarqube/scan
             -   run:
                     name: gradle build
                     command: ./gradlew clean build
@@ -96,4 +96,5 @@ workflows:
     ci-pipeline:
         jobs:
             -   build:
+                    context: sonarcloud
                     <<: *ci_branch_only

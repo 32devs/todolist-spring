@@ -12,10 +12,11 @@ subprojects {
     apply plugin: 'java'
     apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'jacoco'
 
     group = 'kr.co.devs32'
     version = '1.0'
-    sourceCompatibility = javaVersion
+    sourceCompatibility = JavaVersion.VERSION_21
 
     repositories {
         mavenCentral()
@@ -37,6 +38,13 @@ subprojects {
     dependencyManagement {
         imports {
             mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+        }
+    }
+
+    jacocoTestReport {
+        reports {
+//            xml.outputLocation = layout.buildDirectory.file("customJacocoReportDir/xml")
+            xml.required = true
         }
     }
 }
