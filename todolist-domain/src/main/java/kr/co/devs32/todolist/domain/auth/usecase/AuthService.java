@@ -1,11 +1,13 @@
 package kr.co.devs32.todolist.domain.auth.usecase;
 
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import kr.co.devs32.todolist.common.error.TodolistException;
 import kr.co.devs32.todolist.domain.auth.domain.User;
+import kr.co.devs32.todolist.domain.auth.error.AuthErrorCode;
 import kr.co.devs32.todolist.domain.auth.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -20,7 +22,7 @@ public class AuthService implements AuthUseCases {
 	public Long signUp(User user) {
 		userUseCases.findByEmail(user.getEmail())
 			.ifPresent(e -> {
-				throw new IllegalArgumentException("exist user");
+				throw buildDuplicatedUserException();
 			});
 		return userUseCases.persist(user).getId();
 	}
@@ -28,10 +30,10 @@ public class AuthService implements AuthUseCases {
 	@Override
 	public User signIn(String email, String password) {
 		User user = userUseCases.findByEmail(email)
-			.orElseThrow(() -> new NoSuchElementException("user not found"));
+			.orElseThrow(AuthService::buildNotFoundUserException);
 
-		if (user.isMatchPassword(password)) {
-			throw new IllegalStateException("password not match");
+		if (!user.isMatchPassword(password)) {
+			throw buildInvalidLoginException();
 		}
 
 		return user;
@@ -45,5 +47,26 @@ public class AuthService implements AuthUseCases {
 	@Override
 	public void revokeRefreshToken(String token) {
 		refreshTokenRepository.revokeToken(token);
+	}
+
+	private static TodolistException buildNotFoundUserException() {
+		return TodolistException.builder()
+			.errorCode(AuthErrorCode.NOT_FOUND_USER)
+			.httpStatus(HttpStatus.BAD_REQUEST)
+			.build();
+	}
+
+	private static TodolistException buildDuplicatedUserException() {
+		return TodolistException.builder()
+			.errorCode(AuthErrorCode.DUPLICATED_USER)
+			.httpStatus(HttpStatus.BAD_REQUEST)
+			.build();
+	}
+
+	private static TodolistException buildInvalidLoginException() {
+		return TodolistException.builder()
+			.errorCode(AuthErrorCode.INVALID_LOGIN)
+			.httpStatus(HttpStatus.BAD_REQUEST)
+			.build();
 	}
 }
