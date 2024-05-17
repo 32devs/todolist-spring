@@ -5,6 +5,7 @@ buildscript {
     dependencies {
         classpath ("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
         classpath ("io.spring.gradle:dependency-management-plugin:${springDependencyManagementVersion}")
+        classpath ("org.jacoco:org.jacoco.core:${jacocoVersion}")
     }
 }
 
@@ -41,10 +42,20 @@ subprojects {
         }
     }
 
+    jacoco {
+        toolVersion = "0.8.7"
+    }
+
     jacocoTestReport {
         reports {
-//            xml.outputLocation = layout.buildDirectory.file("customJacocoReportDir/xml")
-            xml.required = true
+            html.required.set(true)
+            xml.required.set(true)
+            csv.required.set(false)
+            html.outputLocation.set(layout.buildDirectory.dir("jacocoHtml"))
         }
+    }
+
+    test {
+        finalizedBy jacocoTestReport
     }
 }
